@@ -1,49 +1,849 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import SectionCard from '../components/SectionCard.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import Button from '../components/Button.astro';
+import Badge from '../components/Badge.astro';
+import StepNumber from '../components/StepNumber.astro';
+
+// ブログ記事（最新 3 件）
+const allPosts = await getCollection('blog');
+const posts = allPosts
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+
+// ダミーコンテンツ（kanoke-in の構成を踏襲）
+const hero = {
+	tagline: 'ダミーのタグラインがここに入ります',
+	heading: 'サイトのメインメッセージをここに',
+};
+
+const experience = {
+	title: 'サービスの流れ',
+	steps: [
+		'ステップ 1 のダミーテキストがここに入ります',
+		'ステップ 2 のダミーテキストがここに入ります',
+		'ステップ 3 のダミーテキストがここに入ります',
+		'ステップ 4 のダミーテキストがここに入ります',
+	],
+};
+
+const recommend = {
+	title: 'こんな方におすすめ',
+	items: [
+		'おすすめポイント 1 のダミー',
+		'おすすめポイント 2 のダミー',
+		'おすすめポイント 3 のダミー',
+		'おすすめポイント 4 のダミー',
+		'おすすめポイント 5 のダミー',
+		'おすすめポイント 6 のダミー',
+	],
+};
+
+const plans = {
+	title: 'プラン',
+	regular: {
+		title: '通常プラン',
+		noReservation: '予約不要',
+		capacity: '定員 10 名',
+		price: '¥3,000 / 名',
+		desc: '通常プランのダミー説明文がここに入ります。気軽に参加できる基本プランです。',
+		programs: [
+			{ time: '10:00', name: 'プログラム A', desc: 'プログラム A のダミー説明文です' },
+			{ time: '14:00', name: 'プログラム B', desc: 'プログラム B のダミー説明文です' },
+			{ time: '18:00', name: 'プログラム C', desc: 'プログラム C のダミー説明文です' },
+		],
+	},
+	private: {
+		title: '貸切プラン',
+		reservation: '要予約',
+		capacity: '1〜6 名',
+		price: '¥30,000 〜',
+		desc: '貸切プランのダミー説明文がここに入ります。プライベート空間で利用できます。',
+		recommendItems: [
+			'少人数で利用したい方',
+			'特別な日の記念に',
+			'カスタマイズしたい方',
+		],
+		menuItems: [
+			'メニュー項目 1',
+			'メニュー項目 2',
+			'メニュー項目 3',
+		],
+	},
+};
+
+const access = {
+	title: 'アクセス',
+	landmark: 'ダミーランドマーク',
+	address1: '〒000-0000',
+	address2: '東京都新宿区ダミー 1-2-3 ダミービル 4階',
+	train1: 'JR 山手線 ダミー駅 徒歩 5 分',
+	train2: '東京メトロ ダミー線 ダミー駅 徒歩 3 分',
+	closedDays: '定休日: 月曜・火曜',
+	scheduleNote: '※ 祝日は営業する場合があります',
+};
+
+const faq = {
+	title: 'よくある質問',
+	items: [
+		{ q: '予約は必要ですか?', a: '通常プランは予約不要でご参加いただけます。貸切プランは事前予約が必要です。' },
+		{ q: '駐車場はありますか?', a: '専用駐車場はございません。近隣のコインパーキングをご利用ください。' },
+		{ q: 'キャンセルはできますか?', a: '前日までのご連絡で無料キャンセル可能です。' },
+		{ q: '何歳から参加できますか?', a: '小学生以上の方にご参加いただけます。' },
+	],
+};
+
+const testimonials = {
+	title: 'お客様の声',
+	items: [
+		{
+			body: 'とても良い体験でした。ダミーの感想文がここに入ります。また来たいと思います。',
+			name: 'ダミー 太郎',
+			attribute: '30 代 / 会社員',
+		},
+		{
+			body: '想像以上の時間を過ごせました。ダミーの感想文がここに入ります。',
+			name: 'ダミー 花子',
+			attribute: '40 代 / フリーランス',
+		},
+	],
+};
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Base title="test-site-01">
+	{/* ═══ ヒーロー ═══ */}
+	<section class="hero" id="hero-section">
+		<img src="/images/hero-slide-1.jpg" alt="" class="hero-slide hero-slide-active" />
+		<img src="/images/hero-slide-2.jpg" alt="" class="hero-slide" />
+		<img src="/images/hero-slide-3.jpg" alt="" class="hero-slide" />
+		<img src="/images/hero-slide-4.jpg" alt="" class="hero-slide" />
+		<div class="hero-content">
+			<p class="hero-tagline">{hero.tagline}</p>
+			<div class="hero-logo">
+				<img src="/images/logo-transparent.webp" alt="" width="150" height="150" />
+			</div>
+			<h1 class="hero-heading">{hero.heading}</h1>
+		</div>
+	</section>
+
+	{/* ═══ Main + Sidebar レイアウト ═══ */}
+	<div class="page-container">
+		<div class="layout-grid">
+			{/* ── メインカラム ── */}
+			<main class="main-column">
+				{/* 体験説明 */}
+				<SectionCard>
+					<SectionTitle>{experience.title}</SectionTitle>
+					<ol class="steps">
+						{experience.steps.map((step, i) => (
+							<li class="step">
+								<StepNumber num={i + 1} />
+								<span>{step}</span>
+							</li>
+						))}
+					</ol>
+					<div class="experience-image">
+						<img src="/images/hero-coffin-room.png" alt="" />
+					</div>
+				</SectionCard>
+
+				{/* おすすめ */}
+				<SectionCard>
+					<SectionTitle>{recommend.title}</SectionTitle>
+					<ul class="recommend-list">
+						{recommend.items.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</SectionCard>
+
+				{/* プラン */}
+				<SectionCard id="plans">
+					<SectionTitle>{plans.title}</SectionTitle>
+					<div class="plans-accordion">
+						{/* 通常プラン */}
+						<details class="plan-accordion-item" open>
+							<summary class="plan-accordion-trigger">
+								<div class="plan-accordion-header">
+									<span class="plan-accordion-title">{plans.regular.title}</span>
+									<span class="plan-accordion-meta">
+										<Badge variant="cta">{plans.regular.noReservation}</Badge>
+										<Badge>{plans.regular.capacity}</Badge>
+										<span>{plans.regular.price}</span>
+									</span>
+								</div>
+								<span class="plan-accordion-icon">▼</span>
+							</summary>
+							<div class="plan-accordion-content">
+								<p>{plans.regular.desc}</p>
+								<div class="plan-programs">
+									{plans.regular.programs.map((p) => (
+										<div class="plan-program-card">
+											<p class="plan-program-name">{p.name}（{p.time}〜）</p>
+											<p class="plan-program-desc">{p.desc}</p>
+										</div>
+									))}
+								</div>
+								<div class="plan-detail-link">
+									<a href="#">詳細を見る →</a>
+								</div>
+							</div>
+						</details>
+						{/* 貸切プラン */}
+						<details class="plan-accordion-item">
+							<summary class="plan-accordion-trigger">
+								<div class="plan-accordion-header">
+									<span class="plan-accordion-title">{plans.private.title}</span>
+									<span class="plan-accordion-meta">
+										<Badge variant="cta">{plans.private.reservation}</Badge>
+										<Badge>{plans.private.capacity}</Badge>
+										<span>{plans.private.price}</span>
+									</span>
+								</div>
+								<span class="plan-accordion-icon">▼</span>
+							</summary>
+							<div class="plan-accordion-content">
+								<p>{plans.private.desc}</p>
+								<div>
+									<h3 class="plan-subtitle">このような方におすすめ</h3>
+									<ul class="plan-list">
+										{plans.private.recommendItems.map((item) => (
+											<li>{item}</li>
+										))}
+									</ul>
+								</div>
+								<div>
+									<h3 class="plan-subtitle">選べる内容</h3>
+									<ul class="plan-list">
+										{plans.private.menuItems.map((item) => (
+											<li>{item}</li>
+										))}
+									</ul>
+								</div>
+								<div class="plan-detail-link">
+									<a href="#">詳細を見る →</a>
+								</div>
+							</div>
+						</details>
+					</div>
+				</SectionCard>
+
+				{/* アクセス */}
+				<SectionCard id="access">
+					<SectionTitle>{access.title}</SectionTitle>
+					<iframe
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.631136554385!2d139.70419099999998!3d35.71069369999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188daa2ea65e99%3A0x4e1de1ee25f65867!2z44GL44KT44GK44GRaW4gKEthbm5va2UtaW4gQ29mZmluIE1lZGl0YXRpb24gU3BhY2Up!5e0!3m2!1sja!2sjp!4v1775634733860!5m2!1sja!2sjp"
+						class="access-map"
+						allowfullscreen
+						loading="lazy"
+					></iframe>
+					<div class="access-details">
+						<div class="access-row">
+							<span class="access-icon">📍</span>
+							<div>
+								<p>{access.landmark}</p>
+								<p>{access.address1}</p>
+								<p>{access.address2}</p>
+							</div>
+						</div>
+						<div class="access-row">
+							<span class="access-icon">🚃</span>
+							<div>
+								<p>{access.train1}</p>
+								<p>{access.train2}</p>
+							</div>
+						</div>
+						<div class="access-row">
+							<span class="access-icon">📅</span>
+							<div>
+								<p>{access.closedDays}</p>
+								<p class="access-note">{access.scheduleNote}</p>
+							</div>
+						</div>
+					</div>
+					<div class="access-buttons">
+						<Button href="#">道順ガイド</Button>
+						<Button href="#" variant="outline">お問い合わせ</Button>
+					</div>
+				</SectionCard>
+
+				{/* Q&A */}
+				<SectionCard id="faq">
+					<SectionTitle>{faq.title}</SectionTitle>
+					<div class="faq-list">
+						{faq.items.map((item) => (
+							<details class="faq-item">
+								<summary class="faq-question">{item.q}</summary>
+								<p class="faq-answer">{item.a}</p>
+							</details>
+						))}
+					</div>
+				</SectionCard>
+
+				{/* 体験者の感想 */}
+				<SectionCard>
+					<SectionTitle>{testimonials.title}</SectionTitle>
+					<div class="testimonials-list">
+						{testimonials.items.map((item) => (
+							<blockquote class="testimonial">
+								<p class="testimonial-body">{item.body}</p>
+								<footer class="testimonial-footer">
+									<cite class="testimonial-name">{item.name}</cite>
+									<span class="testimonial-attr">{item.attribute}</span>
+								</footer>
+							</blockquote>
+						))}
+					</div>
+				</SectionCard>
+
+				{/* ブログ */}
+				{posts.length > 0 && (
+					<SectionCard>
+						<SectionTitle>ブログ</SectionTitle>
+						<div class="blog-list">
+							{posts.map((post) => (
+								<article class="blog-card">
+									<a href={`/blog/${post.id}/`}>
+										<h3 class="blog-card-title">{post.data.title}</h3>
+									</a>
+									{post.data.description && <p class="blog-card-excerpt">{post.data.description}</p>}
+								</article>
+							))}
+						</div>
+						<a href="/blog" class="view-all-link">記事一覧 →</a>
+					</SectionCard>
+				)}
+			</main>
+
+			{/* ── サイドバー（デスクトップ） ── */}
+			<aside class="sidebar">
+				<div class="sidebar-sticky">
+					<div class="sidebar-card">
+						<div class="sidebar-plan">
+							<p class="sidebar-plan-title">通常プラン</p>
+							<div class="plan-badges">
+								<Badge variant="cta">予約不要</Badge>
+								<Badge>定員 10 名</Badge>
+							</div>
+							<p class="sidebar-price">
+								<span class="sidebar-price-num">¥3,000</span>
+								<span class="sidebar-price-unit"> / 名</span>
+							</p>
+							<p class="sidebar-plan-desc">気軽に参加できる基本プランのダミー説明文</p>
+						</div>
+
+						<hr class="sidebar-divider" />
+
+						<div class="sidebar-plan">
+							<p class="sidebar-plan-title">貸切プラン</p>
+							<div class="plan-badges">
+								<Badge variant="cta">要予約</Badge>
+								<Badge>1〜6 名</Badge>
+							</div>
+							<p class="sidebar-price">
+								<span class="sidebar-price-num">¥30,000</span>
+								<span class="sidebar-price-unit"> 〜</span>
+							</p>
+							<p class="sidebar-plan-desc">プライベート空間で利用できるダミー説明文</p>
+						</div>
+
+						<div class="sidebar-links">
+							<Button href="#plans">通常プランを見る</Button>
+							<Button href="#plans">貸切プランを見る</Button>
+							<Button href="#" variant="outline">お問い合わせ</Button>
+						</div>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</div>
+</Base>
+
+<style>
+	/* ═══ Hero ═══ */
+	.hero {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		color: #ffffff;
+		min-height: 50vh;
+	}
+
+	.hero-slide {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		opacity: 0;
+		transition: opacity 1s ease;
+	}
+
+	.hero-slide-active {
+		opacity: 1;
+	}
+
+	.hero-content {
+		position: relative;
+		z-index: 10;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: var(--spacing-8) var(--spacing-4);
+	}
+
+	.hero-tagline {
+		font-size: clamp(1.4rem, 3.5vw, 2rem);
+		font-family: "BIZ UDPMincho", "Zen Old Mincho", serif;
+		font-weight: 700;
+		line-height: 1.5;
+		text-shadow: 3px 3px 3px #000000;
+	}
+
+	.hero-logo {
+		margin: var(--spacing-6) 0;
+		width: 150px;
+		height: 150px;
+		border-radius: 50%;
+		background: #ffffff;
+		overflow: hidden;
+		box-shadow: 0 0 10px rgb(255 255 255), 0 0 20px rgb(255 255 255), 0 0 40px rgb(255 255 255);
+	}
+
+	.hero-logo img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.hero-heading {
+		font-size: clamp(1.4rem, 3.5vw, 2rem);
+		font-family: "BIZ UDPMincho", "Zen Old Mincho", serif;
+		font-weight: 700;
+		line-height: 1.5;
+		text-shadow: 3px 3px 3px #000000;
+	}
+
+	/* ═══ Layout ═══ */
+	.page-container {
+		max-width: 64rem;
+		margin: 0 auto;
+		padding: 1rem;
+	}
+
+	.layout-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	@media (min-width: 1024px) {
+		.layout-grid {
+			grid-template-columns: minmax(0, 1fr) 22rem;
+		}
+	}
+
+	.main-column {
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	/* ═══ Steps ═══ */
+	.steps {
+		list-style: none;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3);
+	}
+
+	.step {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-4);
+		font-size: var(--font-size-lg);
+	}
+
+	.experience-image {
+		margin-top: var(--spacing-6);
+	}
+
+	.experience-image img {
+		width: 100%;
+		max-height: 300px;
+		object-fit: cover;
+	}
+
+	/* ═══ Recommend ═══ */
+	.recommend-list {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: var(--spacing-2);
+	}
+
+	.recommend-list li {
+		padding: var(--spacing-2) var(--spacing-3);
+		background: var(--color-surface);
+		border-left: 3px solid #1a2d5a;
+		font-size: var(--font-size-sm);
+	}
+
+	/* ═══ Plans ═══ */
+	.plans-accordion {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.plan-accordion-item {
+		border-top: 1px solid var(--color-border);
+	}
+
+	.plan-accordion-item:last-child {
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.plan-accordion-trigger {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		padding: 1rem 0;
+		cursor: pointer;
+		list-style: none;
+		transition: background var(--transition-fast);
+	}
+
+	.plan-accordion-trigger::-webkit-details-marker {
+		display: none;
+	}
+
+	.plan-accordion-trigger:hover {
+		background: var(--color-surface);
+	}
+
+	.plan-accordion-header {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-1);
+	}
+
+	.plan-accordion-title {
+		font-size: var(--font-size-lg);
+		font-weight: 700;
+	}
+
+	.plan-accordion-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--spacing-2);
+		font-size: var(--font-size-sm);
+		color: var(--color-text-secondary);
+	}
+
+	.plan-accordion-icon {
+		font-size: var(--font-size-xs);
+		color: var(--color-muted);
+		transition: transform var(--transition-base);
+	}
+
+	.plan-accordion-item[open] .plan-accordion-icon {
+		transform: rotate(180deg);
+	}
+
+	.plan-accordion-content {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-6);
+		padding-bottom: 1rem;
+	}
+
+	.plan-detail-link {
+		margin-top: var(--spacing-2);
+	}
+
+	.plan-detail-link a {
+		color: var(--color-accent);
+		font-weight: 600;
+		font-size: var(--font-size-sm);
+		text-decoration: none;
+	}
+
+	.plan-detail-link a:hover {
+		text-decoration: underline;
+	}
+
+	.plan-programs {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3);
+	}
+
+	.plan-program-card {
+		border: 1px solid var(--color-border);
+		padding: var(--spacing-4);
+	}
+
+	.plan-program-name {
+		font-weight: 700;
+		margin-bottom: var(--spacing-1);
+	}
+
+	.plan-program-desc {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-secondary);
+	}
+
+	.plan-subtitle {
+		font-weight: 700;
+		margin-bottom: var(--spacing-2);
+		padding-bottom: var(--spacing-2);
+		border-bottom: 2px solid var(--color-text);
+		display: inline-block;
+	}
+
+	.plan-list {
+		list-style: disc inside;
+		font-size: var(--font-size-sm);
+		color: var(--color-text-secondary);
+	}
+
+	.plan-list li {
+		margin-bottom: var(--spacing-1);
+	}
+
+	/* ═══ Access ═══ */
+	.access-map {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		border: none;
+	}
+
+	.access-details {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-4);
+		margin-top: var(--spacing-6);
+	}
+
+	.access-row {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--spacing-3);
+	}
+
+	.access-icon {
+		flex-shrink: 0;
+		width: 1.25rem;
+		margin-top: 0.15rem;
+	}
+
+	.access-note {
+		color: var(--color-text-secondary);
+		font-size: var(--font-size-sm);
+	}
+
+	.access-buttons {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--spacing-3);
+		margin-top: var(--spacing-6);
+	}
+
+	/* ═══ FAQ ═══ */
+	.faq-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-2);
+	}
+
+	.faq-item {
+		border: 1px solid var(--color-border);
+		overflow: hidden;
+	}
+
+	.faq-question {
+		padding: var(--spacing-3) var(--spacing-4);
+		font-weight: 600;
+		cursor: pointer;
+		list-style: none;
+	}
+
+	.faq-question::before {
+		content: "Q. ";
+		color: #1a2d5a;
+		font-weight: 700;
+	}
+
+	.faq-question::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-answer {
+		padding: 0 var(--spacing-4) var(--spacing-3) var(--spacing-10);
+		color: var(--color-text-secondary);
+		line-height: 1.7;
+	}
+
+	.faq-item[open] {
+		background: var(--color-surface);
+	}
+
+	/* ═══ Testimonials ═══ */
+	.testimonials-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-6);
+	}
+
+	.testimonial {
+		border-left: 3px solid #1a2d5a;
+		padding: var(--spacing-4) var(--spacing-5);
+		background: var(--color-surface);
+		margin: 0;
+	}
+
+	.testimonial-body {
+		font-size: var(--font-size-sm);
+		line-height: 1.8;
+		color: var(--color-text-secondary);
+		margin-bottom: var(--spacing-3);
+	}
+
+	.testimonial-footer {
+		display: flex;
+		gap: var(--spacing-3);
+		align-items: center;
+		font-size: var(--font-size-sm);
+	}
+
+	.testimonial-name {
+		font-weight: 700;
+		font-style: normal;
+	}
+
+	.testimonial-attr {
+		color: var(--color-muted);
+	}
+
+	/* ═══ Blog ═══ */
+	.blog-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3);
+		margin-bottom: var(--spacing-4);
+	}
+
+	.blog-card {
+		padding: var(--spacing-4);
+		border: 1px solid var(--color-border);
+	}
+
+	.blog-card a {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.blog-card-title {
+		font-size: var(--font-size-base);
+		font-weight: 600;
+	}
+
+	.blog-card-excerpt {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-secondary);
+		margin-top: var(--spacing-1);
+	}
+
+	.view-all-link {
+		font-size: var(--font-size-sm);
+		color: #1a2d5a;
+		text-decoration: none;
+	}
+
+	.view-all-link:hover {
+		text-decoration: underline;
+	}
+
+	/* ═══ Sidebar ═══ */
+	.sidebar {
+		display: none;
+	}
+
+	@media (min-width: 1024px) {
+		.sidebar {
+			display: block;
+		}
+	}
+
+	.sidebar-sticky {
+		position: sticky;
+		top: calc(var(--nav-height) + 1rem);
+	}
+
+	.sidebar-card {
+		border: 3px solid var(--color-text);
+		padding: var(--spacing-6);
+		background: #ffffff;
+	}
+
+	.sidebar-plan-title {
+		font-weight: 700;
+		margin-bottom: var(--spacing-1);
+	}
+
+	.sidebar-price {
+		text-align: center;
+		margin: var(--spacing-2) 0;
+	}
+
+	.sidebar-price-num {
+		font-size: 2rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.sidebar-price-unit {
+		font-size: var(--font-size-sm);
+	}
+
+	.sidebar-plan-desc {
+		font-size: var(--font-size-sm);
+		color: var(--color-text-secondary);
+	}
+
+	.sidebar-divider {
+		border: none;
+		border-top: 1px solid var(--color-border);
+		margin: var(--spacing-4) 0;
+	}
+
+	.sidebar-links {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-2);
+		margin-top: var(--spacing-5);
+	}
+</style>
+
+<script>
+	const slides = document.querySelectorAll<HTMLImageElement>('.hero-slide');
+	if (slides.length > 1) {
+		let current = 0;
+		setInterval(() => {
+			slides[current].classList.remove('hero-slide-active');
+			current = (current + 1) % slides.length;
+			slides[current].classList.add('hero-slide-active');
+		}, 5000);
+	}
+</script>

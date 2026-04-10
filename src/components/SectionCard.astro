@@ -1,0 +1,19 @@
+---
+interface Props {
+	id?: string;
+}
+
+const { id } = Astro.props;
+---
+
+<section class="section-card" id={id}>
+	<slot />
+</section>
+
+<style>
+	.section-card {
+		background: #ffffff;
+		padding: var(--spacing-6);
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+	}
+</style>

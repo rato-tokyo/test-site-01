@@ -1,0 +1,25 @@
+---
+interface Props {
+	num: number;
+}
+
+const { num } = Astro.props;
+---
+
+<span class="step-number">{num}</span>
+
+<style>
+	.step-number {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: var(--color-accent);
+		color: var(--color-on-accent);
+		font-weight: 700;
+		font-size: var(--font-size-sm);
+		flex-shrink: 0;
+	}
+</style>

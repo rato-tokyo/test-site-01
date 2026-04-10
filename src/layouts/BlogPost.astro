@@ -1,86 +1,125 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
+import Base from './Base.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
+import SectionCard from '../components/SectionCard.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
-
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+<Base title={title} description={description}>
+	<article>
+		{heroImage && (
+			<div class="hero-image">
+				<Image width={1020} height={510} src={heroImage} alt="" />
+			</div>
+		)}
+		<div class="page-container">
+			<SectionCard>
+				<div class="title">
+					<p class="date">
+						<FormattedDate date={pubDate} />
+						{
+							updatedDate && (
+								<span class="last-updated-on">
+									（更新: <FormattedDate date={updatedDate} />）
+								</span>
+							)
+						}
+					</p>
+					<h1>{title}</h1>
 				</div>
 				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
 					<slot />
 				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+			</SectionCard>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.hero-image {
+		width: 100%;
+		max-width: 64rem;
+		margin: 0 auto;
+	}
+
+	.hero-image img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.page-container {
+		max-width: 48rem;
+		margin: 0 auto;
+		padding: 1rem;
+	}
+
+	.title {
+		margin-bottom: var(--spacing-6);
+		padding-bottom: var(--spacing-4);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.title h1 {
+		font-size: var(--font-size-3xl);
+		margin: var(--spacing-2) 0 0 0;
+		font-family: var(--font-heading);
+	}
+
+	.date {
+		margin: 0;
+		color: var(--color-muted);
+		font-size: var(--font-size-sm);
+	}
+
+	.last-updated-on {
+		font-style: italic;
+	}
+
+	.prose {
+		line-height: var(--leading-relaxed);
+		color: var(--color-text);
+	}
+
+	.prose :global(p) {
+		margin-bottom: var(--spacing-4);
+	}
+
+	.prose :global(h2),
+	.prose :global(h3) {
+		margin-top: var(--spacing-8);
+		margin-bottom: var(--spacing-3);
+		font-family: var(--font-heading);
+	}
+
+	.prose :global(blockquote) {
+		border-left: 3px solid var(--color-accent);
+		padding-left: var(--spacing-4);
+		margin: var(--spacing-4) 0;
+		color: var(--color-text-secondary);
+	}
+
+	.prose :global(code) {
+		padding: 2px 5px;
+		background: var(--color-surface);
+		border-radius: var(--radius);
+		font-size: 0.9em;
+	}
+
+	.prose :global(pre) {
+		padding: var(--spacing-4);
+		background: var(--color-surface);
+		border-radius: var(--radius-lg);
+		overflow-x: auto;
+	}
+
+	.prose :global(pre code) {
+		padding: 0;
+		background: transparent;
+	}
+</style>
