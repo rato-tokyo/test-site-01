@@ -1,0 +1,46 @@
+---
+// kanoke-in v2 の /shikishi に合わせた色紙一覧ページ。
+// 54枚の色紙画像を新しい順に表示。
+import Base from "../layouts/Base.astro";
+import Container from "../components/Container.astro";
+import Stack from "../components/Stack.astro";
+import SectionCard from "../components/SectionCard.astro";
+import SectionTitle from "../components/SectionTitle.astro";
+import Button from "../components/Button.astro";
+
+const TOTAL = 54;
+const shikishiImages = Array.from({ length: TOTAL }, (_, i) => {
+	const n = TOTAL - i;
+	return {
+		src: `/images/shikishi/shikishi-${String(n).padStart(2, "0")}.jpg`,
+		alt: `色紙 ${n}`,
+	};
+});
+---
+
+<Base title="あなたの「生きる」とは" description="棺桶体験後にお客様が書いた色紙メッセージの一覧。">
+	<Container width="wide" class="py-snug">
+		<Stack gap="snug">
+			<SectionCard>
+				<SectionTitle>あなたの「生きる」とは</SectionTitle>
+				<p class="text-text-muted">かんおけinでは、体験後にご希望のお客様に任意で色紙をお渡しし、「あなたにとって"生きる"とは？」というテーマで自由にメッセージを書いていただいています。棺桶の中で「死」と向き合った直後だからこそ生まれる、飾らない言葉の数々をご紹介します。</p>
+				<div class="mt-snug grid grid-cols-2 gap-snug sm:grid-cols-3">
+					{shikishiImages.map((img) => (
+						<img
+							src={img.src}
+							alt={img.alt}
+							width="400"
+							height="300"
+							class="aspect-[4/3] w-full object-cover"
+							loading="lazy"
+						/>
+					))}
+				</div>
+			</SectionCard>
+
+			<div class="flex justify-center">
+				<Button href="/" variant="outline">戻る</Button>
+			</div>
+		</Stack>
+	</Container>
+</Base>

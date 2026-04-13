@@ -12,6 +12,7 @@
 // ページ内で個別に組む(サブタイトル付きヘッダは SectionTitle の責務に含めない)。
 import Base from "../layouts/Base.astro";
 import SectionCard from "../components/SectionCard.astro";
+import SectionTitle from "../components/SectionTitle.astro";
 import Button from "../components/Button.astro";
 import Container from "../components/Container.astro";
 import Stack from "../components/Stack.astro";
@@ -95,13 +96,8 @@ const steps = [
 	<Container width="wide" class="py-snug">
 		<Stack gap="snug">
 			<SectionCard>
-				{/* CardHeader 相当 */}
-				<div class="mb-comfortable">
-					<h2 class="border-l-4 border-accent pl-snug text-h2 font-bold leading-tight">
-						道順ガイド
-					</h2>
-					<p class="mt-tight text-text-muted">JR高田馬場駅からの道順を写真でご案内します。</p>
-				</div>
+				<SectionTitle>道順ガイド</SectionTitle>
+				<p class="text-text-muted">JR高田馬場駅からの道順を写真でご案内します。</p>
 
 				{/* CardContent(space-y-8) */}
 				<Stack gap="comfortable">

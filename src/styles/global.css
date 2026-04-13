@@ -90,7 +90,7 @@
 	   既存 :root の --content-width(680px)/--wide-width(1200px)と揃えた意味ベース定義も追加。 */
 	--container-content: 42.5rem;  /* 680px - 読み物幅 */
 	--container-wide: 64rem;       /* 1024px - 標準ページ幅(既存 page-container と同じ) */
-	--container-button: 18.75rem;  /* 300px - プライマリボタン最大幅 */
+	--container-button: 16.0rem;  /* 300px - プライマリボタン最大幅 */
 
 	/* --- シャドウ --- */
 	--shadow-card: 0 0 0 1px rgba(0, 0, 0, 0.1);

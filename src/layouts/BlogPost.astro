@@ -5,6 +5,8 @@ import Base from './Base.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import SectionCard from '../components/SectionCard.astro';
 import Button from '../components/Button.astro';
+import Container from '../components/Container.astro';
+import Stack from '../components/Stack.astro';
 
 interface Props extends CollectionEntry<'blog'>['data'] {
 	headings?: Array<{ depth: number; slug: string; text: string }>;
@@ -15,13 +17,13 @@ const tocItems = headings.filter((h) => h.depth === 2);
 ---
 
 <Base title={title} description={description} showNav={false}>
-	<article>
-		{heroImage && (
-			<div class="mx-auto w-full max-w-wide">
-				<Image width={1020} height={510} src={heroImage} alt="" class="block h-auto w-full" />
-			</div>
-		)}
-		<div class="mx-auto max-w-wide p-snug">
+	<Container width="wide" class="py-snug">
+		<Stack gap="snug" as="article">
+			{heroImage && (
+				<div class="w-full">
+					<Image width={1020} height={510} src={heroImage} alt="" class="block h-auto w-full" />
+				</div>
+			)}
 			<SectionCard>
 				<div class="mb-comfortable border-b border-border pb-snug">
 					<p class="m-0 text-small text-text-muted">
@@ -52,12 +54,12 @@ const tocItems = headings.filter((h) => h.depth === 2);
 					<slot />
 				</div>
 			</SectionCard>
-		</div>
 
-		<div class="flex justify-center">
-			<Button href="/blog" variant="outline">記事一覧に戻る</Button>
-		</div>
-	</article>
+			<div class="flex justify-center">
+				<Button href="/blog" variant="outline">記事一覧に戻る</Button>
+			</div>
+		</Stack>
+	</Container>
 </Base>
 
 <style>
@@ -73,7 +75,7 @@ const tocItems = headings.filter((h) => h.depth === 2);
 	}
 
 	.prose :global(em) {
-		font-style: normal;
+		font-style: normal; /* <em> のブラウザデフォルト italic を打ち消す。Tailwind で表現不可のため scoped に残す */
 		color: var(--color-text-muted);
 	}
 

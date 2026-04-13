@@ -9,131 +9,14 @@ import StepNumber from '../components/StepNumber.astro';
 import Container from '../components/Container.astro';
 import Grid from '../components/Grid.astro';
 import Stack from '../components/Stack.astro';
+import { hero, experience, recommend, plans, access, faq, testimonials, shikishi } from '../data/home';
+import { GOOGLE_FORM_CONTACT_URL } from '../consts';
 
 // ブログ記事（最新 3 件）
 const allPosts = await getCollection('blog');
 const posts = allPosts
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 3);
-
-// kanoke-in seed.json (ja) の原文をそのまま流用
-const hero = {
-	tagline: '日本で唯一の瞑想空間',
-	heading: 'かんおけで想う',
-};
-
-const experience = {
-	title: 'どんな体験？',
-	steps: [
-		'本物の棺おけに入ります',
-		'蓋を閉めて窓を開けます',
-		'30分音楽を聞きながら静かに瞑想します',
-	],
-};
-
-const recommend = {
-	title: 'こんな方におすすめ',
-	items: [
-		'ひとりで静かに過ごす時間がほしい',
-		'忙しさや人間関係に少し疲れている',
-		'自分の気持ちを落ち着けたい',
-		'人生の節目で、心を整理したい',
-		'これまでにない体験をしてみたい',
-		'棺おけに入ってみたい、興味がある',
-	],
-};
-
-const plans = {
-	title: 'プラン',
-	regular: {
-		title: '4種類の通常プラン',
-		noReservation: '予約不要',
-		capacity: '定員5名',
-		price: '各 3,000円',
-		desc: '奇数時間スタート・ご来店順での案内',
-		programs: [
-			{ time: '11:00', name: '①リラックス瞑想', desc: 'ヒーリング音楽' },
-			{ time: '13:00', name: '②お経瞑想', desc: '読経の声に包まれる、少し特別な時間' },
-			{ time: '15:00', name: '③シンギングボウル瞑想', desc: '鉢鐘の響きを感じる瞑想時間' },
-			{ time: '17:00', name: '④静寂瞑想', desc: 'BGMなしの静かな棺おけ体験' },
-		],
-	},
-	private: {
-		title: '貸切予約プラン',
-		reservation: '予約制',
-		capacity: '定員1〜5名',
-		price: '1枠 10,000円',
-		desc: '偶数時間スタート（12:00 / 14:00 / 16:00 / 18:00）',
-		recommendItems: [
-			'通常プランの時間が合わない方',
-			'ひとりで体験したい、または気の合う人とだけで体験したい方',
-			'人数が集まり、少しお得に利用したい方（例：4名の場合、1人2,500円）',
-		],
-		menuItems: [
-			'全4プログラム（リラックス瞑想、お経瞑想、シンギングボウル瞑想、静寂瞑想）',
-			'⑤お持ちいただいた音楽（イヤホンジャック／USB Type-C接続のみ・Bluetooth不可）',
-		],
-	},
-};
-
-const access = {
-	title: 'アクセス',
-	landmark: '目印: 1階に中華料理「敦煌（とんこう）」があるビル',
-	address1: '〒169-0075 東京都新宿区高田馬場 1-29-7',
-	address2: 'スカイパレスビル 8階 801号室',
-	train1: 'JR高田馬場駅 早稲田口から徒歩5分',
-	train2: 'JR高田馬場駅 戸山口から徒歩2分',
-	closedDays: '定休日: 月曜・火曜',
-	scheduleNote: '※ 営業時間の急な変更もあるため、来店前にお知らせ欄をご確認ください',
-};
-
-const faq = {
-	title: 'Q&A',
-	items: [
-		{
-			q: '棺おけの蓋は閉めて真っ暗になるのですか？',
-			a: '蓋を閉めた後に小窓を開けます。完全な暗闇ではなく、天井の映像が見える程度の明るさです。蓋を閉めるのが苦手な方は蓋を外して対応可能です。',
-		},
-		{
-			q: 'どんな瞑想をすればよいですか？',
-			a: '特別な瞑想法は必要ありません。寝ていても構いません。リラックスして自由にお過ごしください。',
-		},
-		{
-			q: '途中で出たくなったら出られますか？',
-			a: '棺おけの中にコールボタンがあり、スタッフが蓋を開けます。いつでも途中退出可能です。',
-		},
-		{
-			q: '支払方法は何が使えますか？',
-			a: '各種クレジットカード・電子決済・現金をご利用いただけます。現金でのお支払いにご協力をお願いしております。',
-		},
-		{
-			q: '衛生面は大丈夫ですか？',
-			a: '枕カバーやシーツは不織布の新しいものを利用者ごとに交換しています。',
-		},
-	],
-};
-
-const testimonials = {
-	title: '体験者さまのご感想',
-	items: [
-		{
-			body: 'ちょっと怖かったです・・・棺桶に入るなんて経験ないので・・・。棺桶に入っている間、自分の「死」を感じていました。すると、自分が本当にやりたいことがみえてきました。死を想うことは、より良く生きることにつながると思います。棺桶に入って自分の死を考えることは全ての人におススメしたいです。絶対的な死という存在の前に、様々な雑事が吹き飛び、これだけは成し遂げたいというものが自然にみえてくるからです。致死率は100%です。人は誰でも必ず死にます。人生において本当に大切なことをみつけることができたら、人生の目的の半分は達成できたと言っても良いのではないでしょうか？人生の目的を失ってしまった時、ダラけてしまった時、絶望してしまった時など、何度でも棺桶に入って自分の死を意識し、自分自身に喝をいれていきたいです。',
-			name: 'S・N 様',
-			attribute: '女性 60代 埼玉県',
-		},
-		{
-			body: 'かんおけに入ろうとしたとき、少し違和感を覚えました。亡くなった後、他者に入れてもらう箱に、自分から入ったからです。かんおけの中は、想像していたよりも広く感じました。蓋をしても圧迫感を感じないのは、顔の上の窓が開いているからだけでなく、自由に何を考えても良いからです。とは言え私たちは「死」について結構硬直した考えを持っていて、死にまつわるものを避けたり、忌み嫌ったりします。確かに死には怖ろしく、悲しい面もありますが、生と死は表裏一体であり、本来分けることができないものです。死について悟ったり達観することはできなくても、意識の中にごく自然に死を取り入れることはできます。そうすることで死を避けるよりも、より良い生き方ができるのではないかと考えています。「かんおけに入る（in）」ということは、その行為自体が「生」の中に「死」を入れる実践方法だと思います。',
-			name: 'S・M 様',
-			attribute: '男性 50代 東京都',
-		},
-	],
-};
-
-// 色紙(kanoke-in にはあるが test-site-01 では新規セクション追加)
-const shikishi = {
-	title: 'あなたの「生きる」とは',
-	description: 'かんおけinでは、体験後にご希望のお客様に任意で色紙をお渡しし、「あなたにとって"生きる"とは？」というテーマで自由にメッセージを書いていただいています。棺桶の中で「死」と向き合った直後だからこそ生まれる、飾らない言葉の数々をご紹介します。',
-};
 ---
 
 <Base title="かんおけin | 瞑想空間" showNav={true}>
@@ -320,7 +203,7 @@ const shikishi = {
 					</div>
 					<div class="mt-comfortable flex flex-col items-center gap-tight">
 						<Button href="/directions">道順ガイド</Button>
-						<Button href="/contact" variant="outline">お問い合わせ</Button>
+						<Button href={GOOGLE_FORM_CONTACT_URL} target="_blank" variant="outline">お問い合わせ</Button>
 					</div>
 				</SectionCard>
 
@@ -360,6 +243,21 @@ const shikishi = {
 				<SectionCard>
 					<SectionTitle>{shikishi.title}</SectionTitle>
 					<p>{shikishi.description}</p>
+					<div class="mt-snug grid grid-cols-2 gap-snug sm:grid-cols-3">
+						{[54, 53, 52, 51, 50, 49].map((n) => (
+							<img
+								src={`/images/shikishi/shikishi-${String(n).padStart(2, '0')}.jpg`}
+								alt={`色紙 ${n}`}
+								width="400"
+								height="300"
+								class="aspect-[4/3] w-full object-cover"
+								loading="lazy"
+							/>
+						))}
+					</div>
+					<div class="mt-snug flex justify-center">
+						<Button href="/shikishi">もっと見る</Button>
+					</div>
 				</SectionCard>
 
 				{/* ブログ */}
@@ -418,7 +316,7 @@ const shikishi = {
 						<div class="mt-snug flex flex-col gap-tight">
 							<Button href="/plans/regular">通常プランの詳細</Button>
 							<Button href="/plans/private">貸切プランの詳細</Button>
-							<Button href="/contact" variant="outline">お問い合わせ</Button>
+							<Button href={GOOGLE_FORM_CONTACT_URL} target="_blank" variant="outline">お問い合わせ</Button>
 						</div>
 					</div>
 				</div>

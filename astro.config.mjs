@@ -12,9 +12,8 @@ import { remarkNobitenDirectives } from './src/lib/remark-nobiten-directives.ts'
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://example.com',
-	// 静的原則を緩和し、お問い合わせフォーム(/api/contact)のために server mode へ切り替え。
-	// 本番デプロイ先は Cloudflare Pages(Functions 経由)を想定している。
-	// 静的ページは Astro が自動で prerender してくれるので、動的化の負担はフォーム経路だけに閉じ込められる。
+	// server mode: WeekCalendar 等の動的コンポーネント用。
+	// 本番デプロイ先は Cloudflare Pages を想定。静的ページは Astro が自動で prerender する。
 	output: 'server',
 	adapter: cloudflare(),
 	integrations: [mdx(), sitemap(), react()],

@@ -9,10 +9,12 @@ interface Props {
 	href?: string;
 	variant?: 'primary' | 'outline';
 	type?: 'button' | 'submit' | 'reset';
+	target?: '_blank' | '_self' | '_parent' | '_top';
 	class?: string;
 }
 
-const { href, variant = 'primary', type = 'button', class: className = '' } = Astro.props;
+const { href, variant = 'primary', type = 'button', target, class: className = '' } = Astro.props;
+const rel = target === '_blank' ? 'noopener noreferrer' : undefined;
 
 const base =
 	'flex w-full max-w-button items-center justify-center rounded-subtle border-2 p-snug text-small font-bold no-underline transition-colors duration-fast cursor-pointer';
@@ -24,7 +26,7 @@ const variantClass = {
 ---
 
 {href ? (
-	<a href={href} class:list={[base, variantClass, className]}>
+	<a href={href} target={target} rel={rel} class:list={[base, variantClass, className]}>
 		<slot />
 	</a>
 ) : (

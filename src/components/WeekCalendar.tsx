@@ -245,8 +245,8 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 								<span
 									className="inline-block size-swatch rounded-subtle border border-solid"
 									style={{
-										borderColor: "#bbf7d0",
-										backgroundColor: "rgba(220,252,231,0.6)",
+										borderColor: EVENT_COLOR_MAP.green.borderColor,
+										backgroundColor: EVENT_COLOR_MAP.green.bgColor,
 									}}
 								/>
 								<span>◯ 予約可能</span>
@@ -255,8 +255,8 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 								<span
 									className="inline-block size-swatch rounded-subtle border border-solid"
 									style={{
-										borderColor: "#fecaca",
-										backgroundColor: "rgba(254,226,226,0.6)",
+										borderColor: EVENT_COLOR_MAP.red.borderColor,
+										backgroundColor: EVENT_COLOR_MAP.red.bgColor,
 									}}
 								/>
 								<span>✗ 予約不可</span>
