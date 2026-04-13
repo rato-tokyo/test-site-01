@@ -1,0 +1,97 @@
+---
+// kanoke-in の /plans/private を pure コピー。
+// 以下の依存は test-site-01 では外している:
+//   - 予約フォーム + /api/reservation (Resend) → 「ご予約・お問い合わせ」セクションごと削除。
+//     静的原則のため、将来的に Formspree 等の SaaS に差し替える方針
+// WeekCalendar は Astro ネイティブ版(client JS ゼロ、今週固定)に差し替えて再搭載。
+import Base from "../../layouts/Base.astro";
+import SectionCard from "../../components/SectionCard.astro";
+import SectionTitle from "../../components/SectionTitle.astro";
+import Button from "../../components/Button.astro";
+import Container from "../../components/Container.astro";
+import Stack from "../../components/Stack.astro";
+import WeekCalendar from "../../components/WeekCalendar.tsx";
+import { privatePlanEvents } from "../../lib/calendar-data";
+
+const programs = [
+	{ name: "リラックス瞑想", desc: "ヒーリング音楽" },
+	{ name: "お経瞑想", desc: "読経の声に包まれる、少し特別な時間" },
+	{ name: "シンギングボウル瞑想", desc: "鉢鐘の響きを感じる瞑想時間" },
+	{ name: "静寂瞑想", desc: "BGMなしの静かな棺おけ体験" },
+	{ name: "持参音楽プラン", desc: "好きな音楽を店内スピーカーで再生" },
+];
+
+const recommendItems = [
+	"通常プランの時間が合わない方",
+	"ひとりで体験したい、または気の合う人とだけで体験したい方",
+	"人数が集まり少しお得に利用したい方（例: 4名の場合1人2,500円）",
+];
+---
+
+<Base title="貸切プラン" description="好きなプログラムを選べる1組限定の貸切体験。">
+	<Container width="wide" class="py-snug">
+		<Stack gap="snug">
+			<!-- 概要 + プログラム一覧 + おすすめ -->
+			<SectionCard>
+				<SectionTitle>貸切プラン</SectionTitle>
+				<p class="mt-tight text-text-muted">好きなプログラムを選べる1組限定の貸切体験。通常プランの4種類すべてのプログラムに加え、お持ちの音楽を店内スピーカーで再生するプランもお選びいただけます。</p>
+				<p class="mt-snug">
+					<strong>料金</strong> 10,000円/枠 ｜
+					<strong>定員</strong> 1〜5名 ｜
+					<strong>所要時間</strong> 約60分
+				</p>
+
+				<h3 class="mt-comfortable mb-tight inline-block border-b-2 border-text pb-tight font-bold">プログラム一覧</h3>
+				<div class="overflow-x-auto">
+					<table class="w-full border-collapse">
+						<thead>
+							<tr>
+								<th class="border-b-2 border-text px-snug py-tight text-left font-bold">プログラム</th>
+								<th class="border-b-2 border-text px-snug py-tight text-left font-bold">内容</th>
+							</tr>
+						</thead>
+						<tbody>
+							{programs.map((p, i) => (
+								<tr>
+									<td class={`px-snug py-tight ${i < programs.length - 1 ? "border-b border-border" : ""}`}>{i === programs.length - 1 ? <strong>{p.name}</strong> : p.name}</td>
+									<td class={`px-snug py-tight ${i < programs.length - 1 ? "border-b border-border" : ""}`}>{i === programs.length - 1 ? <strong>{p.desc}</strong> : p.desc}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+
+				<h3 class="mt-comfortable mb-tight inline-block border-b-2 border-text pb-tight font-bold">こんな方におすすめ</h3>
+				<ul class="ml-snug flex list-disc flex-col gap-quarter">
+					{recommendItems.map((item) => (
+						<li>{item}</li>
+					))}
+				</ul>
+			</SectionCard>
+
+			<!-- カレンダー -->
+			<SectionCard>
+				<SectionTitle>候補時間帯カレンダー</SectionTitle>
+				<WeekCalendar client:load events={privatePlanEvents} mobileMode="symbol" />
+			</SectionCard>
+
+			<!-- 注意事項 -->
+			<SectionCard>
+				<SectionTitle>ご予約時の注意事項</SectionTitle>
+				<ul class="my-snug ml-snug list-disc">
+					<li class="leading-loose">キャンセルは<strong>前日17:00まで</strong>にご連絡ください</li>
+					<li class="leading-loose">持参音楽プランの場合、音楽はCD・USBメモリ・スマートフォンに入れてお持ちください</li>
+					<li class="leading-loose">スマートフォン接続はイヤホンジャックまたはUSB type-C接続のみ対応（Bluetooth不可）</li>
+					<li class="leading-loose">稀に音響機器と接続できない場��があります</li>
+					<li class="leading-loose">店舗の性質上、お電話での対応が難しいため、ご質問は<a href="mailto:meisou.kanoke.in@gmail.com">メール</a>もしくは<a href="/contact">お問い合わせフォーム</a>にてお願いします</li>
+					<li class="leading-loose">当店は宗教施設ではございません</li>
+				</ul>
+				<p class="mt-snug text-small text-text-muted">営業時間: 偶数時間スタート（12〜18時）・定休日: 月曜・火曜</p>
+			</SectionCard>
+
+			<div class="flex justify-center">
+				<Button href="/#plans" variant="outline">戻る</Button>
+			</div>
+		</Stack>
+	</Container>
+</Base>

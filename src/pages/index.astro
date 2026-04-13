@@ -6,6 +6,9 @@ import SectionTitle from '../components/SectionTitle.astro';
 import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
 import StepNumber from '../components/StepNumber.astro';
+import Container from '../components/Container.astro';
+import Grid from '../components/Grid.astro';
+import Stack from '../components/Stack.astro';
 
 // ブログ記事（最新 3 件）
 const allPosts = await getCollection('blog');
@@ -13,148 +16,200 @@ const posts = allPosts
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 3);
 
-// ダミーコンテンツ（kanoke-in の構成を踏襲）
+// kanoke-in seed.json (ja) の原文をそのまま流用
 const hero = {
-	tagline: 'ダミーのタグラインがここに入ります',
-	heading: 'サイトのメインメッセージをここに',
+	tagline: '日本で唯一の瞑想空間',
+	heading: 'かんおけで想う',
 };
 
 const experience = {
-	title: 'サービスの流れ',
+	title: 'どんな体験？',
 	steps: [
-		'ステップ 1 のダミーテキストがここに入ります',
-		'ステップ 2 のダミーテキストがここに入ります',
-		'ステップ 3 のダミーテキストがここに入ります',
-		'ステップ 4 のダミーテキストがここに入ります',
+		'本物の棺おけに入ります',
+		'蓋を閉めて窓を開けます',
+		'30分音楽を聞きながら静かに瞑想します',
 	],
 };
 
 const recommend = {
 	title: 'こんな方におすすめ',
 	items: [
-		'おすすめポイント 1 のダミー',
-		'おすすめポイント 2 のダミー',
-		'おすすめポイント 3 のダミー',
-		'おすすめポイント 4 のダミー',
-		'おすすめポイント 5 のダミー',
-		'おすすめポイント 6 のダミー',
+		'ひとりで静かに過ごす時間がほしい',
+		'忙しさや人間関係に少し疲れている',
+		'自分の気持ちを落ち着けたい',
+		'人生の節目で、心を整理したい',
+		'これまでにない体験をしてみたい',
+		'棺おけに入ってみたい、興味がある',
 	],
 };
 
 const plans = {
 	title: 'プラン',
 	regular: {
-		title: '通常プラン',
+		title: '4種類の通常プラン',
 		noReservation: '予約不要',
-		capacity: '定員 10 名',
-		price: '¥3,000 / 名',
-		desc: '通常プランのダミー説明文がここに入ります。気軽に参加できる基本プランです。',
+		capacity: '定員5名',
+		price: '各 3,000円',
+		desc: '奇数時間スタート・ご来店順での案内',
 		programs: [
-			{ time: '10:00', name: 'プログラム A', desc: 'プログラム A のダミー説明文です' },
-			{ time: '14:00', name: 'プログラム B', desc: 'プログラム B のダミー説明文です' },
-			{ time: '18:00', name: 'プログラム C', desc: 'プログラム C のダミー説明文です' },
+			{ time: '11:00', name: '①リラックス瞑想', desc: 'ヒーリング音楽' },
+			{ time: '13:00', name: '②お経瞑想', desc: '読経の声に包まれる、少し特別な時間' },
+			{ time: '15:00', name: '③シンギングボウル瞑想', desc: '鉢鐘の響きを感じる瞑想時間' },
+			{ time: '17:00', name: '④静寂瞑想', desc: 'BGMなしの静かな棺おけ体験' },
 		],
 	},
 	private: {
-		title: '貸切プラン',
-		reservation: '要予約',
-		capacity: '1〜6 名',
-		price: '¥30,000 〜',
-		desc: '貸切プランのダミー説明文がここに入ります。プライベート空間で利用できます。',
+		title: '貸切予約プラン',
+		reservation: '予約制',
+		capacity: '定員1〜5名',
+		price: '1枠 10,000円',
+		desc: '偶数時間スタート（12:00 / 14:00 / 16:00 / 18:00）',
 		recommendItems: [
-			'少人数で利用したい方',
-			'特別な日の記念に',
-			'カスタマイズしたい方',
+			'通常プランの時間が合わない方',
+			'ひとりで体験したい、または気の合う人とだけで体験したい方',
+			'人数が集まり、少しお得に利用したい方（例：4名の場合、1人2,500円）',
 		],
 		menuItems: [
-			'メニュー項目 1',
-			'メニュー項目 2',
-			'メニュー項目 3',
+			'全4プログラム（リラックス瞑想、お経瞑想、シンギングボウル瞑想、静寂瞑想）',
+			'⑤お持ちいただいた音楽（イヤホンジャック／USB Type-C接続のみ・Bluetooth不可）',
 		],
 	},
 };
 
 const access = {
 	title: 'アクセス',
-	landmark: 'ダミーランドマーク',
-	address1: '〒000-0000',
-	address2: '東京都新宿区ダミー 1-2-3 ダミービル 4階',
-	train1: 'JR 山手線 ダミー駅 徒歩 5 分',
-	train2: '東京メトロ ダミー線 ダミー駅 徒歩 3 分',
+	landmark: '目印: 1階に中華料理「敦煌（とんこう）」があるビル',
+	address1: '〒169-0075 東京都新宿区高田馬場 1-29-7',
+	address2: 'スカイパレスビル 8階 801号室',
+	train1: 'JR高田馬場駅 早稲田口から徒歩5分',
+	train2: 'JR高田馬場駅 戸山口から徒歩2分',
 	closedDays: '定休日: 月曜・火曜',
-	scheduleNote: '※ 祝日は営業する場合があります',
+	scheduleNote: '※ 営業時間の急な変更もあるため、来店前にお知らせ欄をご確認ください',
 };
 
 const faq = {
-	title: 'よくある質問',
+	title: 'Q&A',
 	items: [
-		{ q: '予約は必要ですか?', a: '通常プランは予約不要でご参加いただけます。貸切プランは事前予約が必要です。' },
-		{ q: '駐車場はありますか?', a: '専用駐車場はございません。近隣のコインパーキングをご利用ください。' },
-		{ q: 'キャンセルはできますか?', a: '前日までのご連絡で無料キャンセル可能です。' },
-		{ q: '何歳から参加できますか?', a: '小学生以上の方にご参加いただけます。' },
+		{
+			q: '棺おけの蓋は閉めて真っ暗になるのですか？',
+			a: '蓋を閉めた後に小窓を開けます。完全な暗闇ではなく、天井の映像が見える程度の明るさです。蓋を閉めるのが苦手な方は蓋を外して対応可能です。',
+		},
+		{
+			q: 'どんな瞑想をすればよいですか？',
+			a: '特別な瞑想法は必要ありません。寝ていても構いません。リラックスして自由にお過ごしください。',
+		},
+		{
+			q: '途中で出たくなったら出られますか？',
+			a: '棺おけの中にコールボタンがあり、スタッフが蓋を開けます。いつでも途中退出可能です。',
+		},
+		{
+			q: '支払方法は何が使えますか？',
+			a: '各種クレジットカード・電子決済・現金をご利用いただけます。現金でのお支払いにご協力をお願いしております。',
+		},
+		{
+			q: '衛生面は大丈夫ですか？',
+			a: '枕カバーやシーツは不織布の新しいものを利用者ごとに交換しています。',
+		},
 	],
 };
 
 const testimonials = {
-	title: 'お客様の声',
+	title: '体験者さまのご感想',
 	items: [
 		{
-			body: 'とても良い体験でした。ダミーの感想文がここに入ります。また来たいと思います。',
-			name: 'ダミー 太郎',
-			attribute: '30 代 / 会社員',
+			body: 'ちょっと怖かったです・・・棺桶に入るなんて経験ないので・・・。棺桶に入っている間、自分の「死」を感じていました。すると、自分が本当にやりたいことがみえてきました。死を想うことは、より良く生きることにつながると思います。棺桶に入って自分の死を考えることは全ての人におススメしたいです。絶対的な死という存在の前に、様々な雑事が吹き飛び、これだけは成し遂げたいというものが自然にみえてくるからです。致死率は100%です。人は誰でも必ず死にます。人生において本当に大切なことをみつけることができたら、人生の目的の半分は達成できたと言っても良いのではないでしょうか？人生の目的を失ってしまった時、ダラけてしまった時、絶望してしまった時など、何度でも棺桶に入って自分の死を意識し、自分自身に喝をいれていきたいです。',
+			name: 'S・N 様',
+			attribute: '女性 60代 埼玉県',
 		},
 		{
-			body: '想像以上の時間を過ごせました。ダミーの感想文がここに入ります。',
-			name: 'ダミー 花子',
-			attribute: '40 代 / フリーランス',
+			body: 'かんおけに入ろうとしたとき、少し違和感を覚えました。亡くなった後、他者に入れてもらう箱に、自分から入ったからです。かんおけの中は、想像していたよりも広く感じました。蓋をしても圧迫感を感じないのは、顔の上の窓が開いているからだけでなく、自由に何を考えても良いからです。とは言え私たちは「死」について結構硬直した考えを持っていて、死にまつわるものを避けたり、忌み嫌ったりします。確かに死には怖ろしく、悲しい面もありますが、生と死は表裏一体であり、本来分けることができないものです。死について悟ったり達観することはできなくても、意識の中にごく自然に死を取り入れることはできます。そうすることで死を避けるよりも、より良い生き方ができるのではないかと考えています。「かんおけに入る（in）」ということは、その行為自体が「生」の中に「死」を入れる実践方法だと思います。',
+			name: 'S・M 様',
+			attribute: '男性 50代 東京都',
 		},
 	],
 };
+
+// 色紙(kanoke-in にはあるが test-site-01 では新規セクション追加)
+const shikishi = {
+	title: 'あなたの「生きる」とは',
+	description: 'かんおけinでは、体験後にご希望のお客様に任意で色紙をお渡しし、「あなたにとって"生きる"とは？」というテーマで自由にメッセージを書いていただいています。棺桶の中で「死」と向き合った直後だからこそ生まれる、飾らない言葉の数々をご紹介します。',
+};
 ---
 
-<Base title="test-site-01">
+<Base title="かんおけin | 瞑想空間" showNav={true}>
 	{/* ═══ ヒーロー ═══ */}
-	<section class="hero" id="hero-section">
-		<img src="/images/hero-slide-1.jpg" alt="" class="hero-slide hero-slide-active" />
-		<img src="/images/hero-slide-2.jpg" alt="" class="hero-slide" />
-		<img src="/images/hero-slide-3.jpg" alt="" class="hero-slide" />
-		<img src="/images/hero-slide-4.jpg" alt="" class="hero-slide" />
-		<div class="hero-content">
-			<p class="hero-tagline">{hero.tagline}</p>
-			<div class="hero-logo">
-				<img src="/images/logo-transparent.webp" alt="" width="150" height="150" />
+	<section
+		id="hero-section"
+		class="relative flex min-h-hero items-center justify-center overflow-hidden text-white"
+	>
+		<img
+			src="/images/hero-slide-1.jpg"
+			alt=""
+			class="hero-slide hero-slide-active absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-slide"
+		/>
+		<img
+			src="/images/hero-slide-2.jpg"
+			alt=""
+			class="hero-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-slide"
+		/>
+		<img
+			src="/images/hero-slide-3.jpg"
+			alt=""
+			class="hero-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-slide"
+		/>
+		<img
+			src="/images/hero-slide-4.jpg"
+			alt=""
+			class="hero-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-slide"
+		/>
+		<div class="relative z-10 flex flex-col items-center px-snug py-loose text-center">
+			<p class="font-heading text-lead font-bold leading-snug text-shadow-hero md:text-h1">
+				{hero.tagline}
+			</p>
+			<div class="my-snug h-logo w-logo overflow-hidden rounded-pill bg-white shadow-logo-glow">
+				<img
+					src="/images/logo-transparent.webp"
+					alt=""
+					width="150"
+					height="150"
+					class="h-full w-full object-cover"
+				/>
 			</div>
-			<h1 class="hero-heading">{hero.heading}</h1>
+			<h1 class="font-heading text-lead font-bold leading-snug text-shadow-hero md:text-h1">
+				{hero.heading}
+			</h1>
 		</div>
 	</section>
 
 	{/* ═══ Main + Sidebar レイアウト ═══ */}
-	<div class="page-container">
-		<div class="layout-grid">
+	<Container width="wide" class="py-snug">
+		<Grid cols="main-sidebar" gap="snug">
 			{/* ── メインカラム ── */}
-			<main class="main-column">
+			<Stack gap="snug" as="main" class="min-w-0">
 				{/* 体験説明 */}
 				<SectionCard>
 					<SectionTitle>{experience.title}</SectionTitle>
-					<ol class="steps">
+					<ol class="flex list-none flex-col gap-snug p-0">
 						{experience.steps.map((step, i) => (
-							<li class="step">
+							<li class="flex items-center gap-snug text-body">
 								<StepNumber num={i + 1} />
 								<span>{step}</span>
 							</li>
 						))}
 					</ol>
-					<div class="experience-image">
-						<img src="/images/hero-coffin-room.png" alt="" />
+					<div class="mt-comfortable aspect-video w-full overflow-hidden">
+						<img src="/images/hero-coffin-room.png" alt="" class="h-full w-full object-cover" />
 					</div>
 				</SectionCard>
 
 				{/* おすすめ */}
 				<SectionCard>
 					<SectionTitle>{recommend.title}</SectionTitle>
-					<ul class="recommend-list">
+					<ul class="grid list-none grid-cols-recommend gap-tight p-0">
 						{recommend.items.map((item) => (
-							<li>{item}</li>
+							<li class="border-l-4 border-accent bg-bg-surface px-snug py-tight text-small">
+								{item}
+							</li>
 						))}
 					</ul>
 				</SectionCard>
@@ -162,68 +217,68 @@ const testimonials = {
 				{/* プラン */}
 				<SectionCard id="plans">
 					<SectionTitle>{plans.title}</SectionTitle>
-					<div class="plans-accordion">
+					<div class="flex flex-col">
 						{/* 通常プラン */}
-						<details class="plan-accordion-item" open>
-							<summary class="plan-accordion-trigger">
-								<div class="plan-accordion-header">
-									<span class="plan-accordion-title">{plans.regular.title}</span>
-									<span class="plan-accordion-meta">
+						<details class="group border-t border-border last:border-b" open>
+							<summary class="flex cursor-pointer list-none items-center justify-between py-snug transition-colors duration-fast hover:bg-bg-surface [&::-webkit-details-marker]:hidden">
+								<div class="flex flex-col gap-quarter">
+									<span class="text-lead font-bold">{plans.regular.title}</span>
+									<span class="flex flex-wrap items-center gap-tight text-small text-text-muted">
 										<Badge variant="cta">{plans.regular.noReservation}</Badge>
 										<Badge>{plans.regular.capacity}</Badge>
 										<span>{plans.regular.price}</span>
 									</span>
 								</div>
-								<span class="plan-accordion-icon">▼</span>
+								<span class="text-caption text-text-subtle transition-transform duration-base group-open:rotate-180">▼</span>
 							</summary>
-							<div class="plan-accordion-content">
+							<div class="flex flex-col gap-comfortable pb-snug">
 								<p>{plans.regular.desc}</p>
-								<div class="plan-programs">
+								<div class="flex flex-col gap-snug">
 									{plans.regular.programs.map((p) => (
-										<div class="plan-program-card">
-											<p class="plan-program-name">{p.name}（{p.time}〜）</p>
-											<p class="plan-program-desc">{p.desc}</p>
+										<div class="border border-border p-snug">
+											<p class="mb-quarter font-bold">{p.name}（{p.time}〜）</p>
+											<p class="text-small text-text-muted">{p.desc}</p>
 										</div>
 									))}
 								</div>
-								<div class="plan-detail-link">
-									<a href="#">詳細を見る →</a>
+								<div class="mt-tight flex justify-center">
+									<Button href="/plans/regular">詳細を見る</Button>
 								</div>
 							</div>
 						</details>
 						{/* 貸切プラン */}
-						<details class="plan-accordion-item">
-							<summary class="plan-accordion-trigger">
-								<div class="plan-accordion-header">
-									<span class="plan-accordion-title">{plans.private.title}</span>
-									<span class="plan-accordion-meta">
+						<details class="group border-t border-border last:border-b">
+							<summary class="flex cursor-pointer list-none items-center justify-between py-snug transition-colors duration-fast hover:bg-bg-surface [&::-webkit-details-marker]:hidden">
+								<div class="flex flex-col gap-quarter">
+									<span class="text-lead font-bold">{plans.private.title}</span>
+									<span class="flex flex-wrap items-center gap-tight text-small text-text-muted">
 										<Badge variant="cta">{plans.private.reservation}</Badge>
 										<Badge>{plans.private.capacity}</Badge>
 										<span>{plans.private.price}</span>
 									</span>
 								</div>
-								<span class="plan-accordion-icon">▼</span>
+								<span class="text-caption text-text-subtle transition-transform duration-base group-open:rotate-180">▼</span>
 							</summary>
-							<div class="plan-accordion-content">
+							<div class="flex flex-col gap-comfortable pb-snug">
 								<p>{plans.private.desc}</p>
 								<div>
-									<h3 class="plan-subtitle">このような方におすすめ</h3>
-									<ul class="plan-list">
+									<h3 class="mb-tight inline-block border-b-2 border-text pb-tight font-bold">このような方におすすめ</h3>
+									<ul class="list-inside list-disc text-small text-text-muted">
 										{plans.private.recommendItems.map((item) => (
-											<li>{item}</li>
+											<li class="mb-quarter">{item}</li>
 										))}
 									</ul>
 								</div>
 								<div>
-									<h3 class="plan-subtitle">選べる内容</h3>
-									<ul class="plan-list">
+									<h3 class="mb-tight inline-block border-b-2 border-text pb-tight font-bold">選べる内容</h3>
+									<ul class="list-inside list-disc text-small text-text-muted">
 										{plans.private.menuItems.map((item) => (
-											<li>{item}</li>
+											<li class="mb-quarter">{item}</li>
 										))}
 									</ul>
 								</div>
-								<div class="plan-detail-link">
-									<a href="#">詳細を見る →</a>
+								<div class="mt-tight flex justify-center">
+									<Button href="/plans/private">詳細を見る</Button>
 								</div>
 							</div>
 						</details>
@@ -235,48 +290,51 @@ const testimonials = {
 					<SectionTitle>{access.title}</SectionTitle>
 					<iframe
 						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.631136554385!2d139.70419099999998!3d35.71069369999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188daa2ea65e99%3A0x4e1de1ee25f65867!2z44GL44KT44GK44GRaW4gKEthbm5va2UtaW4gQ29mZmluIE1lZGl0YXRpb24gU3BhY2Up!5e0!3m2!1sja!2sjp!4v1775634733860!5m2!1sja!2sjp"
-						class="access-map"
+						class="aspect-video w-full border-0"
 						allowfullscreen
 						loading="lazy"
 					></iframe>
-					<div class="access-details">
-						<div class="access-row">
-							<span class="access-icon">📍</span>
+					<div class="mt-comfortable flex flex-col gap-snug">
+						<div class="flex items-start gap-tight">
+							<span class="w-icon shrink-0 text-center">📍</span>
 							<div>
 								<p>{access.landmark}</p>
 								<p>{access.address1}</p>
 								<p>{access.address2}</p>
 							</div>
 						</div>
-						<div class="access-row">
-							<span class="access-icon">🚃</span>
+						<div class="flex items-start gap-tight">
+							<span class="w-icon shrink-0 text-center">🚃</span>
 							<div>
 								<p>{access.train1}</p>
 								<p>{access.train2}</p>
 							</div>
 						</div>
-						<div class="access-row">
-							<span class="access-icon">📅</span>
+						<div class="flex items-start gap-tight">
+							<span class="w-icon shrink-0 text-center">📅</span>
 							<div>
 								<p>{access.closedDays}</p>
-								<p class="access-note">{access.scheduleNote}</p>
+								<p class="text-small text-text-muted">{access.scheduleNote}</p>
 							</div>
 						</div>
 					</div>
-					<div class="access-buttons">
-						<Button href="#">道順ガイド</Button>
-						<Button href="#" variant="outline">お問い合わせ</Button>
+					<div class="mt-comfortable flex flex-col items-center gap-tight">
+						<Button href="/directions">道順ガイド</Button>
+						<Button href="/contact" variant="outline">お問い合わせ</Button>
 					</div>
 				</SectionCard>
 
 				{/* Q&A */}
 				<SectionCard id="faq">
 					<SectionTitle>{faq.title}</SectionTitle>
-					<div class="faq-list">
+					<div class="flex flex-col gap-tight">
 						{faq.items.map((item) => (
-							<details class="faq-item">
-								<summary class="faq-question">{item.q}</summary>
-								<p class="faq-answer">{item.a}</p>
+							<details class="border border-border open:bg-bg-surface">
+								<summary class="flex cursor-pointer list-none gap-tight px-snug py-tight font-semibold [&::-webkit-details-marker]:hidden">
+									<span class="font-bold text-accent">Q.</span>
+									<span>{item.q}</span>
+								</summary>
+								<p class="px-snug pb-tight pl-comfortable text-text-muted">{item.a}</p>
 							</details>
 						))}
 					</div>
@@ -285,554 +343,100 @@ const testimonials = {
 				{/* 体験者の感想 */}
 				<SectionCard>
 					<SectionTitle>{testimonials.title}</SectionTitle>
-					<div class="testimonials-list">
+					<div class="flex flex-col gap-comfortable">
 						{testimonials.items.map((item) => (
-							<blockquote class="testimonial">
-								<p class="testimonial-body">{item.body}</p>
-								<footer class="testimonial-footer">
-									<cite class="testimonial-name">{item.name}</cite>
-									<span class="testimonial-attr">{item.attribute}</span>
+							<blockquote class="m-0 border-l-4 border-accent bg-bg-surface p-snug">
+								<p class="mb-tight text-small leading-relaxed text-text-muted">{item.body}</p>
+								<footer class="flex items-center gap-tight text-small">
+									<cite class="font-bold not-italic">{item.name}</cite>
+									<span class="text-text-subtle">{item.attribute}</span>
 								</footer>
 							</blockquote>
 						))}
 					</div>
 				</SectionCard>
 
+				{/* 色紙 */}
+				<SectionCard>
+					<SectionTitle>{shikishi.title}</SectionTitle>
+					<p>{shikishi.description}</p>
+				</SectionCard>
+
 				{/* ブログ */}
 				{posts.length > 0 && (
 					<SectionCard>
 						<SectionTitle>ブログ</SectionTitle>
-						<div class="blog-list">
+						<div class="mb-snug flex flex-col gap-tight">
 							{posts.map((post) => (
-								<article class="blog-card">
-									<a href={`/blog/${post.id}/`}>
-										<h3 class="blog-card-title">{post.data.title}</h3>
+								<article class="border border-border p-snug">
+									<a href={`/blog/${post.id}/`} class="text-inherit no-underline">
+										<h3 class="text-body font-semibold">{post.data.title}</h3>
 									</a>
-									{post.data.description && <p class="blog-card-excerpt">{post.data.description}</p>}
+									{post.data.description && <p class="mt-quarter text-small text-text-muted">{post.data.description}</p>}
 								</article>
 							))}
 						</div>
-						<a href="/blog" class="view-all-link">記事一覧 →</a>
+						<div class="mt-tight flex justify-center">
+							<Button href="/blog">記事一覧</Button>
+						</div>
 					</SectionCard>
 				)}
-			</main>
+			</Stack>
 
 			{/* ── サイドバー（デスクトップ） ── */}
-			<aside class="sidebar">
+			<aside class="hidden lg:block">
 				<div class="sidebar-sticky">
-					<div class="sidebar-card">
-						<div class="sidebar-plan">
-							<p class="sidebar-plan-title">通常プラン</p>
-							<div class="plan-badges">
+					<div class="border-4 border-text bg-white p-comfortable">
+						<div>
+							<p class="mb-quarter font-bold">通常プラン</p>
+							<div class="flex flex-wrap gap-tight">
 								<Badge variant="cta">予約不要</Badge>
-								<Badge>定員 10 名</Badge>
+								<Badge>定員5名</Badge>
 							</div>
-							<p class="sidebar-price">
-								<span class="sidebar-price-num">¥3,000</span>
-								<span class="sidebar-price-unit"> / 名</span>
+							<p class="my-tight text-center">
+								<span class="text-h1 font-bold tabular-nums">3,000</span>
+								<span class="text-small">円 / 人</span>
 							</p>
-							<p class="sidebar-plan-desc">気軽に参加できる基本プランのダミー説明文</p>
+							<p class="text-small text-text-muted">奇数時間スタート（11〜17時）</p>
 						</div>
 
-						<hr class="sidebar-divider" />
+						<hr class="my-snug border-0 border-t border-border" />
 
-						<div class="sidebar-plan">
-							<p class="sidebar-plan-title">貸切プラン</p>
-							<div class="plan-badges">
-								<Badge variant="cta">要予約</Badge>
-								<Badge>1〜6 名</Badge>
+						<div>
+							<p class="mb-quarter font-bold">貸切予約プラン</p>
+							<div class="flex flex-wrap gap-tight">
+								<Badge variant="cta">予約制</Badge>
+								<Badge>定員1〜5名</Badge>
 							</div>
-							<p class="sidebar-price">
-								<span class="sidebar-price-num">¥30,000</span>
-								<span class="sidebar-price-unit"> 〜</span>
+							<p class="my-tight text-center">
+								<span class="text-h1 font-bold tabular-nums">10,000</span>
+								<span class="text-small">円 / 枠</span>
 							</p>
-							<p class="sidebar-plan-desc">プライベート空間で利用できるダミー説明文</p>
+							<p class="text-small text-text-muted">偶数時間スタート（12〜18時）</p>
 						</div>
 
-						<div class="sidebar-links">
-							<Button href="#plans">通常プランを見る</Button>
-							<Button href="#plans">貸切プランを見る</Button>
-							<Button href="#" variant="outline">お問い合わせ</Button>
+						<div class="mt-snug flex flex-col gap-tight">
+							<Button href="/plans/regular">通常プランの詳細</Button>
+							<Button href="/plans/private">貸切プランの詳細</Button>
+							<Button href="/contact" variant="outline">お問い合わせ</Button>
 						</div>
 					</div>
 				</div>
 			</aside>
-		</div>
-	</div>
+		</Grid>
+	</Container>
 </Base>
 
 <style>
-	/* ═══ Hero ═══ */
-	.hero {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		overflow: hidden;
-		color: #ffffff;
-		min-height: 50vh;
-	}
-
-	.hero-slide {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		opacity: 0;
-		transition: opacity 1s ease;
-	}
-
-	.hero-slide-active {
+	/* Hero - JS の classList トグルと連携するためのフック。 */
+	.hero-slide.hero-slide-active {
 		opacity: 1;
 	}
 
-	.hero-content {
-		position: relative;
-		z-index: 10;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		padding: var(--spacing-8) var(--spacing-4);
-	}
-
-	.hero-tagline {
-		font-size: clamp(1.4rem, 3.5vw, 2rem);
-		font-family: "BIZ UDPMincho", "Zen Old Mincho", serif;
-		font-weight: 700;
-		line-height: 1.5;
-		text-shadow: 3px 3px 3px #000000;
-	}
-
-	.hero-logo {
-		margin: var(--spacing-6) 0;
-		width: 150px;
-		height: 150px;
-		border-radius: 50%;
-		background: #ffffff;
-		overflow: hidden;
-		box-shadow: 0 0 10px rgb(255 255 255), 0 0 20px rgb(255 255 255), 0 0 40px rgb(255 255 255);
-	}
-
-	.hero-logo img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.hero-heading {
-		font-size: clamp(1.4rem, 3.5vw, 2rem);
-		font-family: "BIZ UDPMincho", "Zen Old Mincho", serif;
-		font-weight: 700;
-		line-height: 1.5;
-		text-shadow: 3px 3px 3px #000000;
-	}
-
-	/* ═══ Layout ═══ */
-	.page-container {
-		max-width: 64rem;
-		margin: 0 auto;
-		padding: 1rem;
-	}
-
-	.layout-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 1rem;
-	}
-
-	@media (min-width: 1024px) {
-		.layout-grid {
-			grid-template-columns: minmax(0, 1fr) 22rem;
-		}
-	}
-
-	.main-column {
-		min-width: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	/* ═══ Steps ═══ */
-	.steps {
-		list-style: none;
-		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-3);
-	}
-
-	.step {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-4);
-		font-size: var(--font-size-lg);
-	}
-
-	.experience-image {
-		margin-top: var(--spacing-6);
-	}
-
-	.experience-image img {
-		width: 100%;
-		max-height: 300px;
-		object-fit: cover;
-	}
-
-	/* ═══ Recommend ═══ */
-	.recommend-list {
-		list-style: none;
-		padding: 0;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: var(--spacing-2);
-	}
-
-	.recommend-list li {
-		padding: var(--spacing-2) var(--spacing-3);
-		background: var(--color-surface);
-		border-left: 3px solid #1a2d5a;
-		font-size: var(--font-size-sm);
-	}
-
-	/* ═══ Plans ═══ */
-	.plans-accordion {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.plan-accordion-item {
-		border-top: 1px solid var(--color-border);
-	}
-
-	.plan-accordion-item:last-child {
-		border-bottom: 1px solid var(--color-border);
-	}
-
-	.plan-accordion-trigger {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		padding: 1rem 0;
-		cursor: pointer;
-		list-style: none;
-		transition: background var(--transition-fast);
-	}
-
-	.plan-accordion-trigger::-webkit-details-marker {
-		display: none;
-	}
-
-	.plan-accordion-trigger:hover {
-		background: var(--color-surface);
-	}
-
-	.plan-accordion-header {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-1);
-	}
-
-	.plan-accordion-title {
-		font-size: var(--font-size-lg);
-		font-weight: 700;
-	}
-
-	.plan-accordion-meta {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: var(--spacing-2);
-		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
-	}
-
-	.plan-accordion-icon {
-		font-size: var(--font-size-xs);
-		color: var(--color-muted);
-		transition: transform var(--transition-base);
-	}
-
-	.plan-accordion-item[open] .plan-accordion-icon {
-		transform: rotate(180deg);
-	}
-
-	.plan-accordion-content {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-6);
-		padding-bottom: 1rem;
-	}
-
-	.plan-detail-link {
-		margin-top: var(--spacing-2);
-	}
-
-	.plan-detail-link a {
-		color: var(--color-accent);
-		font-weight: 600;
-		font-size: var(--font-size-sm);
-		text-decoration: none;
-	}
-
-	.plan-detail-link a:hover {
-		text-decoration: underline;
-	}
-
-	.plan-programs {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-3);
-	}
-
-	.plan-program-card {
-		border: 1px solid var(--color-border);
-		padding: var(--spacing-4);
-	}
-
-	.plan-program-name {
-		font-weight: 700;
-		margin-bottom: var(--spacing-1);
-	}
-
-	.plan-program-desc {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
-	}
-
-	.plan-subtitle {
-		font-weight: 700;
-		margin-bottom: var(--spacing-2);
-		padding-bottom: var(--spacing-2);
-		border-bottom: 2px solid var(--color-text);
-		display: inline-block;
-	}
-
-	.plan-list {
-		list-style: disc inside;
-		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
-	}
-
-	.plan-list li {
-		margin-bottom: var(--spacing-1);
-	}
-
-	/* ═══ Access ═══ */
-	.access-map {
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		border: none;
-	}
-
-	.access-details {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-4);
-		margin-top: var(--spacing-6);
-	}
-
-	.access-row {
-		display: flex;
-		align-items: flex-start;
-		gap: var(--spacing-3);
-	}
-
-	.access-icon {
-		flex-shrink: 0;
-		width: 1.25rem;
-		margin-top: 0.15rem;
-	}
-
-	.access-note {
-		color: var(--color-text-secondary);
-		font-size: var(--font-size-sm);
-	}
-
-	.access-buttons {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: var(--spacing-3);
-		margin-top: var(--spacing-6);
-	}
-
-	/* ═══ FAQ ═══ */
-	.faq-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-2);
-	}
-
-	.faq-item {
-		border: 1px solid var(--color-border);
-		overflow: hidden;
-	}
-
-	.faq-question {
-		padding: var(--spacing-3) var(--spacing-4);
-		font-weight: 600;
-		cursor: pointer;
-		list-style: none;
-	}
-
-	.faq-question::before {
-		content: "Q. ";
-		color: #1a2d5a;
-		font-weight: 700;
-	}
-
-	.faq-question::-webkit-details-marker {
-		display: none;
-	}
-
-	.faq-answer {
-		padding: 0 var(--spacing-4) var(--spacing-3) var(--spacing-10);
-		color: var(--color-text-secondary);
-		line-height: 1.7;
-	}
-
-	.faq-item[open] {
-		background: var(--color-surface);
-	}
-
-	/* ═══ Testimonials ═══ */
-	.testimonials-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-6);
-	}
-
-	.testimonial {
-		border-left: 3px solid #1a2d5a;
-		padding: var(--spacing-4) var(--spacing-5);
-		background: var(--color-surface);
-		margin: 0;
-	}
-
-	.testimonial-body {
-		font-size: var(--font-size-sm);
-		line-height: 1.8;
-		color: var(--color-text-secondary);
-		margin-bottom: var(--spacing-3);
-	}
-
-	.testimonial-footer {
-		display: flex;
-		gap: var(--spacing-3);
-		align-items: center;
-		font-size: var(--font-size-sm);
-	}
-
-	.testimonial-name {
-		font-weight: 700;
-		font-style: normal;
-	}
-
-	.testimonial-attr {
-		color: var(--color-muted);
-	}
-
-	/* ═══ Blog ═══ */
-	.blog-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-3);
-		margin-bottom: var(--spacing-4);
-	}
-
-	.blog-card {
-		padding: var(--spacing-4);
-		border: 1px solid var(--color-border);
-	}
-
-	.blog-card a {
-		text-decoration: none;
-		color: inherit;
-	}
-
-	.blog-card-title {
-		font-size: var(--font-size-base);
-		font-weight: 600;
-	}
-
-	.blog-card-excerpt {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
-		margin-top: var(--spacing-1);
-	}
-
-	.view-all-link {
-		font-size: var(--font-size-sm);
-		color: #1a2d5a;
-		text-decoration: none;
-	}
-
-	.view-all-link:hover {
-		text-decoration: underline;
-	}
-
-	/* ═══ Sidebar ═══ */
-	.sidebar {
-		display: none;
-	}
-
-	@media (min-width: 1024px) {
-		.sidebar {
-			display: block;
-		}
-	}
-
+	/* Sidebar sticky - calc の top 位置指定のため scoped に残す。 */
 	.sidebar-sticky {
 		position: sticky;
-		top: calc(var(--nav-height) + 1rem);
-	}
-
-	.sidebar-card {
-		border: 3px solid var(--color-text);
-		padding: var(--spacing-6);
-		background: #ffffff;
-	}
-
-	.sidebar-plan-title {
-		font-weight: 700;
-		margin-bottom: var(--spacing-1);
-	}
-
-	.sidebar-price {
-		text-align: center;
-		margin: var(--spacing-2) 0;
-	}
-
-	.sidebar-price-num {
-		font-size: 2rem;
-		font-weight: 700;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.sidebar-price-unit {
-		font-size: var(--font-size-sm);
-	}
-
-	.sidebar-plan-desc {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-secondary);
-	}
-
-	.sidebar-divider {
-		border: none;
-		border-top: 1px solid var(--color-border);
-		margin: var(--spacing-4) 0;
-	}
-
-	.sidebar-links {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-2);
-		margin-top: var(--spacing-5);
+		top: calc(var(--spacing-nav) + var(--spacing-snug));
 	}
 </style>
 

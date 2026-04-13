@@ -9,13 +9,39 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "eslint \"src/**/*.{astro,ts,tsx,js,jsx}\"",
+    "lint:fix": "eslint \"src/**/*.{astro,ts,tsx,js,jsx}\" --fix",
+    "oxlint": "oxlint src/",
+    "oxlint:fix": "oxlint src/ --fix",
+    "lint:all": "pnpm oxlint && pnpm lint"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.1.8",
     "@astrojs/mdx": "^5.0.3",
+    "@astrojs/react": "^5.0.3",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.5",
-    "sharp": "^0.34.3"
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "remark-directive": "^4.0.0",
+    "resend": "^6.10.0",
+    "sharp": "^0.34.3",
+    "tailwindcss": "^4.2.2",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "astro-eslint-parser": "^1.4.0",
+    "eslint": "^9.39.4",
+    "eslint-plugin-better-tailwindcss": "^4.4.0",
+    "mdast-util-directive": "^3.1.0",
+    "oxlint": "^1.59.0",
+    "oxlint-tailwindcss": "^0.4.1",
+    "typescript-eslint": "^8.58.1"
   }
 }

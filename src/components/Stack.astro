@@ -1,0 +1,27 @@
+---
+/**
+ * Stack — 子要素を縦に等間隔に並べるプリミティブ(Every Layout 由来)。
+ *
+ * - `gap`: 'tight' | 'snug' | 'comfortable' | 'loose' | 'section'
+ * - `as`: ラップするタグ(デフォルト div)
+ */
+interface Props {
+	gap?: 'tight' | 'snug' | 'comfortable' | 'loose' | 'section';
+	as?: keyof HTMLElementTagNameMap;
+	class?: string;
+}
+
+const { gap = 'snug', as: Tag = 'div', class: className = '' } = Astro.props;
+
+const gapClass = {
+	tight: 'space-y-tight',
+	snug: 'space-y-snug',
+	comfortable: 'space-y-comfortable',
+	loose: 'space-y-loose',
+	section: 'space-y-section',
+}[gap];
+---
+
+<Tag class:list={[gapClass, className]}>
+	<slot />
+</Tag>

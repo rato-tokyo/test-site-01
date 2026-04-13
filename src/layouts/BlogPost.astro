@@ -4,122 +4,215 @@ import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import SectionCard from '../components/SectionCard.astro';
+import Button from '../components/Button.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+interface Props extends CollectionEntry<'blog'>['data'] {
+	headings?: Array<{ depth: number; slug: string; text: string }>;
+}
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, headings = [] } = Astro.props;
+const tocItems = headings.filter((h) => h.depth === 2);
 ---
 
-<Base title={title} description={description}>
+<Base title={title} description={description} showNav={false}>
 	<article>
 		{heroImage && (
-			<div class="hero-image">
-				<Image width={1020} height={510} src={heroImage} alt="" />
+			<div class="mx-auto w-full max-w-wide">
+				<Image width={1020} height={510} src={heroImage} alt="" class="block h-auto w-full" />
 			</div>
 		)}
-		<div class="page-container">
+		<div class="mx-auto max-w-wide p-snug">
 			<SectionCard>
-				<div class="title">
-					<p class="date">
+				<div class="mb-comfortable border-b border-border pb-snug">
+					<p class="m-0 text-small text-text-muted">
 						<FormattedDate date={pubDate} />
 						{
 							updatedDate && (
-								<span class="last-updated-on">
+								<span>
 									（更新: <FormattedDate date={updatedDate} />）
 								</span>
 							)
 						}
 					</p>
-					<h1>{title}</h1>
+					<h1 class="mt-tight text-h1">{title}</h1>
 				</div>
+				{tocItems.length > 0 && (
+					<nav class="mb-comfortable rounded-soft border border-border p-snug">
+						<p class="mb-tight font-bold">目次</p>
+						<ol class="m-0 list-inside list-decimal space-y-quarter p-0">
+							{tocItems.map((item) => (
+								<li>
+									<a href={`#${item.slug}`} class="text-accent no-underline hover:underline">{item.text}</a>
+								</li>
+							))}
+						</ol>
+					</nav>
+				)}
 				<div class="prose">
 					<slot />
 				</div>
 			</SectionCard>
 		</div>
+
+		<div class="flex justify-center">
+			<Button href="/blog" variant="outline">記事一覧に戻る</Button>
+		</div>
 	</article>
 </Base>
 
 <style>
-	.hero-image {
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-	}
-
-	.hero-image img {
-		display: block;
-		width: 100%;
-		height: auto;
-	}
-
-	.page-container {
-		max-width: 48rem;
-		margin: 0 auto;
-		padding: 1rem;
-	}
-
-	.title {
-		margin-bottom: var(--spacing-6);
-		padding-bottom: var(--spacing-4);
-		border-bottom: 1px solid var(--color-border);
-	}
-
-	.title h1 {
-		font-size: var(--font-size-3xl);
-		margin: var(--spacing-2) 0 0 0;
-		font-family: var(--font-heading);
-	}
-
-	.date {
-		margin: 0;
-		color: var(--color-muted);
-		font-size: var(--font-size-sm);
-	}
-
-	.last-updated-on {
-		font-style: italic;
-	}
-
+	/*
+	  BlogPost の prose ブロックは MDX から生成される DOM を相手にするため、
+	  slot 配下の要素に Tailwind class を直接付けられない。
+	  よって :global() で残すが、参照する変数は @theme 側の意味ベーストークンに寄せてある。
+	  トップレベルのラッパ要素は index.astro 側で Tailwind 化済み。
+	*/
 	.prose {
-		line-height: var(--leading-relaxed);
+		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
 	}
 
-	.prose :global(p) {
-		margin-bottom: var(--spacing-4);
+	.prose :global(em) {
+		font-style: normal;
+		color: var(--color-text-muted);
 	}
 
-	.prose :global(h2),
+	.prose :global(p) {
+		margin-bottom: var(--spacing-snug);
+	}
+
+	.prose :global(h2) {
+		margin-top: var(--spacing-loose);
+		margin-bottom: var(--spacing-snug);
+		border-left: 4px solid var(--color-accent);
+		padding-left: var(--spacing-snug);
+		font-weight: 700;
+		line-height: var(--line-height-tight);
+		scroll-margin-top: calc(var(--spacing-nav) + var(--spacing-snug));
+	}
+
 	.prose :global(h3) {
-		margin-top: var(--spacing-8);
-		margin-bottom: var(--spacing-3);
-		font-family: var(--font-heading);
+		margin-top: var(--spacing-comfortable);
+		margin-bottom: var(--spacing-tight);
+		font-weight: 700;
 	}
 
 	.prose :global(blockquote) {
-		border-left: 3px solid var(--color-accent);
-		padding-left: var(--spacing-4);
-		margin: var(--spacing-4) 0;
-		color: var(--color-text-secondary);
+		border-left: 4px solid var(--color-accent);
+		padding-left: var(--spacing-snug);
+		margin: var(--spacing-snug) 0;
+		color: var(--color-text-muted);
 	}
 
 	.prose :global(code) {
-		padding: 2px 5px;
-		background: var(--color-surface);
-		border-radius: var(--radius);
-		font-size: 0.9em;
+		padding: var(--spacing-quarter) var(--spacing-tight);
+		background: var(--color-bg-surface);
+		border-radius: var(--radius-subtle);
+		font-size: var(--text-small);
 	}
 
 	.prose :global(pre) {
-		padding: var(--spacing-4);
-		background: var(--color-surface);
-		border-radius: var(--radius-lg);
+		padding: var(--spacing-snug);
+		background: var(--color-bg-surface);
+		border-radius: var(--radius-soft);
 		overflow-x: auto;
 	}
 
 	.prose :global(pre code) {
 		padding: 0;
 		background: transparent;
+	}
+
+	/* テーブル */
+	.prose :global(table) {
+		width: 100%;
+		border-collapse: collapse;
+		margin-bottom: var(--spacing-snug);
+	}
+
+	.prose :global(th),
+	.prose :global(td) {
+		border: 1px solid var(--color-border);
+		padding: var(--spacing-tight) var(--spacing-snug);
+		text-align: left;
+	}
+
+	.prose :global(th) {
+		font-weight: 700;
+		background: var(--color-bg-surface);
+	}
+
+	/* :::note コンテナ */
+	.prose :global(aside.note) {
+		margin: var(--spacing-comfortable) 0;
+		padding: var(--spacing-snug);
+		background: var(--color-bg-surface);
+		border-left: 4px solid var(--color-accent);
+		border-radius: var(--radius-subtle);
+	}
+
+	.prose :global(aside.note > p:first-child) {
+		margin-top: 0;
+	}
+
+	.prose :global(aside.note > p:last-child) {
+		margin-bottom: 0;
+	}
+
+	/* :muted[...] 装飾 */
+	.prose :global(.muted) {
+		color: var(--color-text-subtle);
+		font-size: var(--text-small);
+	}
+
+	.prose :global(.muted a) {
+		color: inherit;
+		text-decoration: underline;
+	}
+
+	/* :::faq コンテナ */
+	.prose :global(section.faq) {
+		margin: var(--spacing-comfortable) 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-tight);
+	}
+
+	.prose :global(details.faq-item) {
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-subtle);
+		padding: 0;
+		background: var(--color-bg-surface);
+	}
+
+	.prose :global(details.faq-item[open]) {
+		background: transparent;
+	}
+
+	.prose :global(summary.faq-question) {
+		margin: 0;
+		padding: var(--spacing-tight) var(--spacing-snug);
+		cursor: pointer;
+		font-weight: 600;
+		list-style: none;
+	}
+
+	.prose :global(summary.faq-question::-webkit-details-marker) {
+		display: none;
+	}
+
+	.prose :global(summary.faq-question::before) {
+		content: 'Q. ';
+		color: var(--color-accent);
+		font-weight: 700;
+	}
+
+	.prose :global(details.faq-item[open] summary.faq-question) {
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.prose :global(details.faq-item > p) {
+		margin: 0;
+		padding: var(--spacing-tight) var(--spacing-snug);
 	}
 </style>

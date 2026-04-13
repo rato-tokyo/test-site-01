@@ -1,4 +1,8 @@
 ---
+/**
+ * StepNumber — ステップの順番を示す丸いバッジ。
+ * w-icon / h-icon (32px) の正方形を pill 形状で。
+ */
 interface Props {
 	num: number;
 }
@@ -6,20 +10,8 @@ interface Props {
 const { num } = Astro.props;
 ---
 
-<span class="step-number">{num}</span>
-
-<style>
-	.step-number {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 32px;
-		height: 32px;
-		border-radius: 50%;
-		background: var(--color-accent);
-		color: var(--color-on-accent);
-		font-weight: 700;
-		font-size: var(--font-size-sm);
-		flex-shrink: 0;
-	}
-</style>
+<span
+	class="flex h-icon w-icon shrink-0 items-center justify-center rounded-pill bg-accent text-small font-bold text-text-on-brand"
+>
+	{num}
+</span>

@@ -1,0 +1,36 @@
+---
+/**
+ * Grid — CSS Grid のラッパープリミティブ。
+ *
+ * - `cols`: 'auto' (auto-fill minmax) / 'main-sidebar' (メイン + 22rem サイドバー、lg 以上) / 'halves' (2 等分、md 以上) / 'thirds' (3 等分、md 以上)
+ * - `gap`: 'tight' | 'snug' | 'comfortable'
+ * - `min`: auto モード時の最小幅(デフォルト 250px)
+ */
+interface Props {
+	cols?: 'auto' | 'main-sidebar' | 'halves' | 'thirds';
+	gap?: 'tight' | 'snug' | 'comfortable';
+	min?: string;
+	class?: string;
+}
+
+const { cols = 'auto', gap = 'snug', min = '250px', class: className = '' } = Astro.props;
+
+const gapClass = {
+	tight: 'gap-tight',
+	snug: 'gap-snug',
+	comfortable: 'gap-comfortable',
+}[gap];
+
+const colsClass = {
+	auto: '',
+	'main-sidebar': 'grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem]',
+	halves: 'grid-cols-1 md:grid-cols-2',
+	thirds: 'grid-cols-1 md:grid-cols-3',
+}[cols];
+
+const autoStyle = cols === 'auto' ? `grid-template-columns: repeat(auto-fill, minmax(${min}, 1fr));` : undefined;
+---
+
+<div class:list={['grid', gapClass, colsClass, className]} style={autoStyle}>
+	<slot />
+</div>

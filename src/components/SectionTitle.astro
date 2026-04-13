@@ -1,17 +1,11 @@
 ---
+/**
+ * SectionTitle — セクション見出し。左縦ボーダー + h2 サイズ。
+ *
+ * kanoke-in 本番に合わせて「下線ではなく左縦ボーダー」のスタイル。
+ */
 ---
 
-<h2 class="section-title">
+<h2 class="mb-comfortable border-l-4 border-accent pl-snug text-h2 font-bold leading-tight">
 	<slot />
 </h2>
-
-<style>
-	.section-title {
-		font-size: var(--font-size-xl);
-		font-weight: 700;
-		margin-bottom: var(--spacing-6);
-		padding-bottom: var(--spacing-2);
-		border-bottom: 2px solid var(--color-accent);
-		display: inline-block;
-	}
-</style>

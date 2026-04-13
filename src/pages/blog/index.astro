@@ -1,85 +1,48 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import SectionCard from '../../components/SectionCard.astro';
-import SectionTitle from '../../components/SectionTitle.astro';
-import { SITE_TITLE } from '../../consts';
+// kanoke-in v2 の /blog のレイアウトに合わせた記事一覧。
+// SectionCard + SectionTitle + 日付・タイトルの1行グリッド。
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Container from "../../components/Container.astro";
+import SectionCard from "../../components/SectionCard.astro";
+import SectionTitle from "../../components/SectionTitle.astro";
+import Button from "../../components/Button.astro";
 
-const posts = (await getCollection('blog')).sort(
+const posts = (await getCollection("blog")).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const formatDate = (date: Date) => date.toISOString().slice(0, 10);
 ---
 
-<Base title={`ブログ — ${SITE_TITLE}`}>
-	<div class="page-container">
+<Base title="ブログ" description="ブログ記事一覧">
+	<Container width="wide" class="py-snug">
 		<SectionCard>
 			<SectionTitle>ブログ</SectionTitle>
-			<ul class="post-list">
-				{
-					posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>
-								{post.data.heroImage && (
-									<Image width={720} height={360} src={post.data.heroImage} alt="" />
-								)}
-								<h3 class="post-title">{post.data.title}</h3>
-								<p class="post-date">
-									<FormattedDate date={post.data.pubDate} />
-								</p>
-							</a>
-						</li>
-					))
-				}
-			</ul>
+
+			{posts.length === 0 ? (
+				<p class="text-body text-text-muted">記事はまだありません。</p>
+			) : (
+				<div class="flex flex-col border-t border-border">
+					{posts.map((post) => (
+						<a
+							href={`/blog/${post.id}/`}
+							class="grid grid-cols-[auto_1fr] items-baseline gap-x-snug border-b border-border py-snug no-underline rounded-soft transition-colors duration-fast hover:bg-bg-surface"
+						>
+							<span class="shrink-0 whitespace-nowrap text-body text-text-muted">
+								{formatDate(post.data.pubDate)}
+							</span>
+							<span class="truncate text-body text-text">
+								{post.data.title}
+							</span>
+						</a>
+					))}
+				</div>
+			)}
 		</SectionCard>
-	</div>
+
+		<div class="mt-snug flex justify-center">
+			<Button href="/" variant="outline">戻る</Button>
+		</div>
+	</Container>
 </Base>
-
-<style>
-	.page-container {
-		max-width: 64rem;
-		margin: 0 auto;
-		padding: 1rem;
-	}
-
-	.post-list {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-		gap: var(--spacing-6);
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.post-list a {
-		display: block;
-		text-decoration: none;
-		color: inherit;
-		transition: opacity var(--transition-fast);
-	}
-
-	.post-list a:hover {
-		opacity: 0.85;
-	}
-
-	.post-list img {
-		margin-bottom: var(--spacing-3);
-		width: 100%;
-		height: auto;
-	}
-
-	.post-title {
-		font-size: var(--font-size-lg);
-		font-weight: 700;
-		color: var(--color-text);
-		margin: 0 0 var(--spacing-1) 0;
-	}
-
-	.post-date {
-		font-size: var(--font-size-sm);
-		color: var(--color-muted);
-		margin: 0;
-	}
-</style>

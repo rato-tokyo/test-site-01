@@ -1,19 +1,19 @@
 ---
+/**
+ * SectionCard — 白背景の区画カード。
+ * 本番 kanoke-in の shadcn Card を意味ベーストークンに寄せた実装。
+ */
 interface Props {
 	id?: string;
+	class?: string;
 }
 
-const { id } = Astro.props;
+const { id, class: className = '' } = Astro.props;
 ---
 
-<section class="section-card" id={id}>
+<section
+	id={id}
+	class:list={['rounded-subtle bg-white p-comfortable shadow-card', className]}
+>
 	<slot />
 </section>
-
-<style>
-	.section-card {
-		background: #ffffff;
-		padding: var(--spacing-6);
-		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-	}
-</style>

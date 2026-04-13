@@ -1,0 +1,134 @@
+---
+// kanoke-in の /ja/directions を Astro にそのまま pure コピー。
+// 本番は "use client" な React コンポーネントだが、ロジックゼロの静的ページなので
+// Astro ネイティブに書き下してある。client JS は一切使わない。
+//
+// 本番は Tailwind + shadcn/ui Card で
+//   - CardHeader: h2(border-l-4) + subtitle
+//   - CardContent: 10 ステップ(space-y-8)。各ステップは space-y-3
+//   - バッジ: w-8 h-8 rounded-full bg-brand text-white
+//   - 画像: max-w-md(448px) rounded-lg(本番 computed value は 2px)
+// を組み合わせている。SectionCard は他ページと揃えつつ、CardHeader 相当は
+// ページ内で個別に組む(サブタイトル付きヘッダは SectionTitle の責務に含めない)。
+import Base from "../layouts/Base.astro";
+import SectionCard from "../components/SectionCard.astro";
+import Button from "../components/Button.astro";
+import Container from "../components/Container.astro";
+import Stack from "../components/Stack.astro";
+import StepNumber from "../components/StepNumber.astro";
+
+const steps = [
+	{
+		title: "JR高田馬場駅 戸山口へ",
+		description: "JR高田馬場駅に着いたら、新大久保方面のホーム端にある戸山口へ進んでください。",
+		src: "/images/directions/step-1.png",
+		width: 1024,
+		height: 1536,
+	},
+	{
+		title: "戸山口の改札を出て左へ",
+		description: "戸山口の改札を出たら、左方向へ進みます。",
+		src: "/images/directions/step-2.png",
+		width: 1024,
+		height: 1536,
+	},
+	{
+		title: "地下道を出たら右に曲がる",
+		description: "地下道を抜けたら、右に曲がります。",
+		src: "/images/directions/step-3.png",
+		width: 1024,
+		height: 1536,
+	},
+	{
+		title: "セブンイレブンの前を通過",
+		description: "右に曲がるとセブンイレブンが見えます。セブンイレブンの前を通って2軒先のビルを左に曲がります。",
+		src: "/images/directions/step-4.png",
+		width: 1024,
+		height: 1536,
+	},
+	{
+		title: "上り坂を進んで大通りへ",
+		description: "少し上り坂になっている道を進むと、大通り（つつじ通り）に出ます。",
+		src: "/images/directions/step-5.jpg",
+		width: 3000,
+		height: 4000,
+	},
+	{
+		title: "茶色のレンガビルが目印",
+		description: "道を挟んだ前方に茶色のレンガビルがあります。1階は中華料理「敦煌（とんこう）」さんです。",
+		src: "/images/directions/step-6.jpg",
+		width: 900,
+		height: 1200,
+	},
+	{
+		title: "ビル入口",
+		description: "敦煌の右隣にスカイパレスビルの入口があります。",
+		src: "/images/directions/step-7.jpg",
+		width: 900,
+		height: 1200,
+	},
+	{
+		title: "テナント案内板",
+		description: "入口横の案内板で8Fの「かんおけin」を確認できます。",
+		src: "/images/directions/step-8.jpg",
+		width: 1080,
+		height: 1350,
+	},
+	{
+		title: "エントランス",
+		description: "ガラスドアを入り、エレベーターで8階へ上がってください。",
+		src: "/images/directions/step-9.jpg",
+		width: 900,
+		height: 1200,
+	},
+	{
+		title: "801号室",
+		description: "8階に着いたら、かんおけinのロゴが目印の801号室です。",
+		src: "/images/directions/step-10.jpg",
+		width: 1108,
+		height: 1477,
+	},
+];
+---
+
+<Base title="道順ガイド" description="JR高田馬場駅からの道順を写真でご案内します。">
+	<Container width="wide" class="py-snug">
+		<Stack gap="snug">
+			<SectionCard>
+				{/* CardHeader 相当 */}
+				<div class="mb-comfortable">
+					<h2 class="border-l-4 border-accent pl-snug text-h2 font-bold leading-tight">
+						道順ガイド
+					</h2>
+					<p class="mt-tight text-text-muted">JR高田馬場駅からの道順を写真でご案内します。</p>
+				</div>
+
+				{/* CardContent(space-y-8) */}
+				<Stack gap="comfortable">
+					{steps.map((step, i) => (
+						<Stack gap="tight">
+							<h3 class="flex items-center gap-tight text-body font-bold leading-tight">
+								<StepNumber num={i + 1} />
+								{step.title}
+							</h3>
+							<img
+								src={step.src}
+								alt={step.title}
+								width={step.width}
+								height={step.height}
+								loading="eager"
+								class="block h-auto w-full max-w-step-img rounded-subtle"
+							/>
+							<p class="leading-loose text-text-muted">{step.description}</p>
+						</Stack>
+					))}
+				</Stack>
+			</SectionCard>
+
+			<div class="flex justify-center">
+				<Button href="/#access" variant="outline">戻る</Button>
+			</div>
+		</Stack>
+	</Container>
+</Base>
+

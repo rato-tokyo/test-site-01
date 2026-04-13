@@ -1,0 +1,55 @@
+---
+// kanoke-in の /plans/regular を pure コピー。
+// 以下の依存は test-site-01 では外している:
+//   - /contact フォームへのリンク → アンカーはそのまま残し、ページ自体は未実装
+// WeekCalendar は Astro ネイティブ版(client JS ゼロ、今週固定)に差し替えて再搭載。
+import Base from "../../layouts/Base.astro";
+import SectionCard from "../../components/SectionCard.astro";
+import SectionTitle from "../../components/SectionTitle.astro";
+import Button from "../../components/Button.astro";
+import Container from "../../components/Container.astro";
+import Stack from "../../components/Stack.astro";
+import WeekCalendar from "../../components/WeekCalendar.tsx";
+import { regularPlanEvents } from "../../lib/calendar-data";
+---
+
+<Base title="通常プラン" description="予約不要・来店順。時間帯ごとに異なる4種類の瞑想プログラムを体験できます。">
+	<Container width="wide" class="py-snug">
+		<Stack gap="snug">
+			<SectionCard>
+				<SectionTitle>通常プラン</SectionTitle>
+				<p class="mt-tight text-text-muted">予約不要・来店順。時間帯ごとに異なる4種類の瞑想プログラムを体験できます。</p>
+				<p class="mt-snug">
+					<strong>料金</strong> 3,000円/人 ｜
+					<strong>定員</strong> 5名 ｜
+					<strong>予約</strong> 不要
+				</p>
+			</SectionCard>
+
+			<SectionCard>
+				<SectionTitle>営業カレンダー</SectionTitle>
+				<WeekCalendar client:load events={regularPlanEvents} />
+			</SectionCard>
+
+			<SectionCard>
+				<SectionTitle>ご来店時の注意事項</SectionTitle>
+				<ul class="mt-snug mb-comfortable ml-snug list-disc">
+					<li class="leading-loose">各回開始の<strong>5分前まで</strong>にご来店ください</li>
+					<li class="leading-loose">開始時刻を過ぎると入店できません</li>
+					<li class="leading-loose">5名に達した場合、その回の受付は終了となります</li>
+					<li class="leading-loose">静寂瞑想でイヤホンをご使用の場合、音漏れにご注意ください（骨伝導イヤホンは使用不可）</li>
+				</ul>
+				<ul class="mt-snug mb-comfortable ml-snug list-disc">
+					<li class="leading-loose">店舗の性質上、お電話での対応が難しいため、ご質問は<a href="mailto:meisou.kanoke.in@gmail.com" class="text-accent underline">メール</a>もしくは<a href="/contact" class="text-accent underline">お問い合わせフォーム</a>にてお願いします</li>
+					<li class="leading-loose">当店は宗教施設ではございません</li>
+				</ul>
+				<p class="mt-snug text-small text-text-muted">営業時間: 奇数時間スタート（11〜17時）・定休日: 月曜・火曜</p>
+				<p class="mt-snug text-small text-text-muted">※ 営業時間の急な変更もあるため、来店前にカレンダーをご確認ください</p>
+			</SectionCard>
+
+			<div class="flex justify-center">
+				<Button href="/#plans" variant="outline">戻る</Button>
+			</div>
+		</Stack>
+	</Container>
+</Base>

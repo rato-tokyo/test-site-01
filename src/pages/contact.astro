@@ -1,0 +1,131 @@
+---
+// kanoke-in-v2 の /ja/contact を Astro ネイティブに移植。
+// 本番は React client + useFormSubmit(useActionState) で SPA 的に送信 → 同ページで成功 UI に差し替える。
+// test-site-01 では client JS を入れず、素の <form method="POST"> で /api/contact に POST する。
+// - 送信成功時: /contact?sent=1 に 303 リダイレクト → 成功カードを表示
+// - 送信失敗時: /contact?error=... に 303 リダイレクト → エラーメッセージ表示
+// クエリ経由で入力値を再描画はしない(エラー時に入力消えても許容)。kanoke-in-v2 と同じ割り切り。
+import Base from "../layouts/Base.astro";
+import SectionCard from "../components/SectionCard.astro";
+import Button from "../components/Button.astro";
+
+// SSR(server mode)では、ビルド済み静的ページと混ぜないため明示的に prerender=false を宣言。
+// 本当は静的でもクエリ文字列は動作するが、フォーム UX のために動的側に寄せる。
+export const prerender = false;
+
+const params = Astro.url.searchParams;
+const submitted = params.get("sent") === "1";
+const error = params.get("error") ?? "";
+---
+
+<Base title="お問い合わせ" description="test-site-01 へのお問い合わせはこちらから。">
+	<div class="mx-auto flex max-w-wide flex-col gap-snug p-snug">
+		<SectionCard>
+			{/* CardHeader 相当 */}
+			<div class="mb-comfortable">
+				<h2 class="border-l-4 border-accent pl-snug text-h2 font-bold leading-tight">お問い合わせ</h2>
+			</div>
+
+			<div class="flex flex-col gap-comfortable">
+				<p class="text-text-muted">
+					ご質問・ご予約についてのご相談は、以下のフォームよりお気軽にお問い合わせください。
+					2営業日以内にご返信いたします。
+				</p>
+
+				{submitted && (
+					<div class="rounded-subtle border border-accent/20 bg-white p-comfortable text-center">
+						<p class="text-lead font-medium text-text">お問い合わせを受け付けました</p>
+						<p class="mt-tight whitespace-pre-line text-small text-text-subtle">
+							ご入力いただいたメールアドレス宛に受付確認のメールをお送りしました。<br />
+							内容を確認の上、2営業日以内にご返信いたします。
+						</p>
+					</div>
+				)}
+				{!submitted && (
+					<form method="POST" action="/api/contact" class="flex flex-col gap-comfortable">
+						{/* ハニーポット: ブラウザユーザーには見えない hidden フィールド。
+						    ボットがフォームの全フィールドを自動入力してくる習性を利用する。
+						    visibility:hidden や display:none は一部のボットが検知するので、
+						    sr-only で視界外に飛ばす + tabindex=-1 + aria-hidden が無難。 */}
+						<div class="sr-only" aria-hidden="true">
+							<label for="website">Website</label>
+							<input
+								type="text"
+								id="website"
+								name="website"
+								tabindex="-1"
+								autocomplete="off"
+							/>
+						</div>
+
+						<div class="flex flex-col gap-tight">
+							<label for="name" class="font-bold">
+								お名前 <span class="ml-quarter text-danger">*</span>
+							</label>
+							<input
+								type="text"
+								id="name"
+								name="name"
+								required
+								placeholder="山田 太郎"
+								class="w-full rounded-subtle border border-border bg-white px-snug py-tight font-sans text-body text-text transition-colors duration-fast focus:border-accent focus:outline-none focus:ring-3 focus:ring-accent/25"
+							/>
+						</div>
+
+						<div class="flex flex-col gap-tight">
+							<label for="email" class="font-bold">
+								メールアドレス <span class="ml-quarter text-danger">*</span>
+							</label>
+							<input
+								type="email"
+								id="email"
+								name="email"
+								required
+								placeholder="example@email.com"
+								class="w-full rounded-subtle border border-border bg-white px-snug py-tight font-sans text-body text-text transition-colors duration-fast focus:border-accent focus:outline-none focus:ring-3 focus:ring-accent/25"
+							/>
+						</div>
+
+						<div class="flex flex-col gap-tight">
+							<label for="tel" class="font-bold">
+								電話番号 <span class="ml-quarter text-danger">*</span>
+							</label>
+							<input
+								type="tel"
+								id="tel"
+								name="tel"
+								required
+								placeholder="090-1234-5678"
+								class="w-full rounded-subtle border border-border bg-white px-snug py-tight font-sans text-body text-text transition-colors duration-fast focus:border-accent focus:outline-none focus:ring-3 focus:ring-accent/25"
+							/>
+						</div>
+
+						<div class="flex flex-col gap-tight">
+							<label for="message" class="font-bold">
+								お問い合わせ内容 <span class="ml-quarter text-danger">*</span>
+							</label>
+							<textarea
+								id="message"
+								name="message"
+								rows="6"
+								required
+								placeholder="お問い合わせ内容をご記入ください。"
+								class="w-full resize-y rounded-subtle border border-border bg-white px-snug py-tight font-sans text-body leading-relaxed text-text transition-colors duration-fast focus:border-accent focus:outline-none focus:ring-3 focus:ring-accent/25"
+							></textarea>
+						</div>
+
+						{error && <p class="text-center text-small text-danger">{error}</p>}
+
+						<div class="mt-tight flex justify-center">
+							<Button type="submit">送信する</Button>
+						</div>
+					</form>
+				)}
+			</div>
+		</SectionCard>
+
+		<div class="flex justify-center">
+			<Button href="/" variant="outline">戻る</Button>
+		</div>
+	</div>
+</Base>
