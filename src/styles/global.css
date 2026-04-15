@@ -65,6 +65,7 @@
 	--color-border: var(--color-line-200);
 	--color-border-subtle: var(--color-line-100);
 	--color-danger: var(--color-cta);
+	--color-badge-dark: var(--color-ink-600);
 
 	/* --- フォントファミリー --- */
 	--font-sans: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;

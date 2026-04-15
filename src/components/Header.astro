@@ -26,13 +26,25 @@ const { showNav = true } = Astro.props;
 				<div
 					class="flex gap-content font-heading text-small max-sm:order-1 max-sm:w-full max-sm:flex-wrap max-sm:gap-element"
 				>
-					<a href="/" class="font-bold text-text no-underline transition-colors duration-fast hover:text-accent">ホーム</a>
-					<a href="/#plans" class="font-bold text-text no-underline transition-colors duration-fast hover:text-accent">プラン</a>
-					<a href="/#access" class="font-bold text-text no-underline transition-colors duration-fast hover:text-accent">アクセス</a>
-					<a href="/#faq" class="font-bold text-text no-underline transition-colors duration-fast hover:text-accent">Q&amp;A</a>
-					<a href="/blog" class="font-bold text-text no-underline transition-colors duration-fast hover:text-accent">ブログ</a>
+					<a href="/" class="nav-link">ホーム</a>
+					<a href="/#plans" class="nav-link">プラン</a>
+					<a href="/#access" class="nav-link">アクセス</a>
+					<a href="/#faq" class="nav-link">Q&amp;A</a>
+					<a href="/blog" class="nav-link">ブログ</a>
 				</div>
 			</div>
 		)}
 	</nav>
 </header>
+
+<style>
+	.nav-link {
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+		text-decoration: none;
+		transition: color var(--duration-fast) ease;
+	}
+	.nav-link:hover {
+		color: var(--color-accent);
+	}
+</style>

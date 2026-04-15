@@ -73,6 +73,7 @@
 | `border` | line-200 | 標準境界線 |
 | `border-subtle` | line-100 | 薄い境界線 |
 | `danger` | cta | 警告・破壊的アクション |
+| `badge-dark` | ink-600 | バッジ濃グレー背景 |
 
 ## 色: フッター専用
 

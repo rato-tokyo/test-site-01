@@ -145,7 +145,7 @@ const posts = allPosts
 								<div class="flex flex-col gap-block pb-content">
 									<p>{plans.private.desc}</p>
 									<div>
-										<h3 class="mb-element inline-block border-b-2 border-text pb-element font-bold">このような方におすすめ</h3>
+										<h3 class="subsection-heading">このような方におすすめ</h3>
 										<ul class="list-inside list-disc text-small text-text-muted">
 											{plans.private.recommendItems.map((item) => (
 												<li class="mb-inset">{item}</li>
@@ -153,7 +153,7 @@ const posts = allPosts
 										</ul>
 									</div>
 									<div>
-										<h3 class="mb-element inline-block border-b-2 border-text pb-element font-bold">選べる内容</h3>
+										<h3 class="subsection-heading">選べる内容</h3>
 										<ul class="list-inside list-disc text-small text-text-muted">
 											{plans.private.menuItems.map((item) => (
 												<li class="mb-inset">{item}</li>
@@ -342,6 +342,14 @@ const posts = allPosts
 	.sidebar-sticky {
 		position: sticky;
 		top: calc(var(--spacing-header) + var(--spacing-content));
+	}
+
+	.subsection-heading {
+		display: inline-block;
+		margin-bottom: var(--spacing-element);
+		padding-bottom: var(--spacing-element);
+		border-bottom: 2px solid var(--color-text);
+		font-weight: var(--font-weight-bold);
 	}
 </style>
 

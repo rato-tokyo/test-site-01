@@ -36,7 +36,7 @@ const recommendItems = [
 						<strong>所要時間</strong> 約60分
 					</p>
 
-					<h3 class="mt-block mb-element inline-block border-b-2 border-text pb-element font-bold">プログラム一覧</h3>
+					<h3 class="subsection-heading mt-block">プログラム一覧</h3>
 					<div class="overflow-x-auto">
 						<table class="w-full border-collapse">
 							<thead>
@@ -56,7 +56,7 @@ const recommendItems = [
 						</table>
 					</div>
 
-					<h3 class="mt-block mb-element inline-block border-b-2 border-text pb-element font-bold">こんな方におすすめ</h3>
+					<h3 class="subsection-heading mt-block">こんな方におすすめ</h3>
 					<ul class="ml-content flex list-disc flex-col gap-inset">
 						{recommendItems.map((item) => (
 							<li>{item}</li>
@@ -72,7 +72,7 @@ const recommendItems = [
 				<div class="rounded-subtle bg-white p-block shadow-card">
 					<SectionHeading>ご予約・お問い合わせ</SectionHeading>
 
-					<h3 class="mt-block mb-element inline-block border-b-2 border-text pb-element font-bold">注意事項</h3>
+					<h3 class="subsection-heading mt-block">注意事項</h3>
 					<ul class="my-content ml-content list-disc">
 						<li class="leading-list">キャンセルは<strong>前日17:00まで</strong>にご連絡ください</li>
 						<li class="leading-list">持参音楽プランの場合、音楽はCD・USBメモリ・スマートフォンに入れてお持ちください</li>
@@ -95,3 +95,13 @@ const recommendItems = [
 		</Container>
 	</section>
 </BaseLayout>
+
+<style>
+	.subsection-heading {
+		display: inline-block;
+		margin-bottom: var(--spacing-element);
+		padding-bottom: var(--spacing-element);
+		border-bottom: 2px solid var(--color-text);
+		font-weight: var(--font-weight-bold);
+	}
+</style>

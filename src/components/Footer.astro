@@ -20,11 +20,11 @@ import { SITE_TITLE } from '../consts';
 			<nav
 				class="flex shrink-0 flex-wrap justify-end gap-content text-small max-lg:max-w-full max-lg:justify-start max-lg:gap-element"
 			>
-				<a href="/" class="text-footer-subtle no-underline transition-colors duration-fast hover:text-white">ホーム</a>
-				<a href="/#plans" class="text-footer-subtle no-underline transition-colors duration-fast hover:text-white">プラン</a>
-				<a href="/#access" class="text-footer-subtle no-underline transition-colors duration-fast hover:text-white">アクセス</a>
-				<a href="/#faq" class="text-footer-subtle no-underline transition-colors duration-fast hover:text-white">Q&amp;A</a>
-				<a href="/blog" class="text-footer-subtle no-underline transition-colors duration-fast hover:text-white">ブログ</a>
+				<a href="/" class="footer-nav-link">ホーム</a>
+				<a href="/#plans" class="footer-nav-link">プラン</a>
+				<a href="/#access" class="footer-nav-link">アクセス</a>
+				<a href="/#faq" class="footer-nav-link">Q&amp;A</a>
+				<a href="/blog" class="footer-nav-link">ブログ</a>
 			</nav>
 		</div>
 		<div
@@ -34,3 +34,14 @@ import { SITE_TITLE } from '../consts';
 		</div>
 	</div>
 </footer>
+
+<style>
+	.footer-nav-link {
+		color: var(--color-footer-subtle);
+		text-decoration: none;
+		transition: color var(--duration-fast) ease;
+	}
+	.footer-nav-link:hover {
+		color: var(--color-white);
+	}
+</style>
