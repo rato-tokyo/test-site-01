@@ -3,7 +3,7 @@
  * Container — ページ幅を制限する外枠プリミティブ。
  *
  * - `width`: 'content' (読み物系: 48rem 相当) / 'wide' (標準: 64rem 相当) / 'full' (制限なし)
- * - 左右に snug の padding を入れる(モバイルでのはみ出し防止)
+ * - 左右に content の padding を入れる(モバイルでのはみ出し防止)
  */
 interface Props {
 	width?: 'content' | 'wide' | 'full';
@@ -20,6 +20,6 @@ const widthClass = {
 }[width];
 ---
 
-<Tag class:list={['mx-auto w-full px-snug', widthClass, className]}>
+<Tag class:list={['mx-auto w-full px-content', widthClass, className]}>
 	<slot />
 </Tag>

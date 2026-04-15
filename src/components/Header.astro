@@ -9,22 +9,22 @@ const { showNav = true } = Astro.props;
 ---
 
 <header
-	class="z-100 max-sm:static sm:sticky sm:top-0 bg-white shadow-header max-sm:shadow-none"
+	class="z-header max-sm:static sm:sticky sm:top-0 bg-white shadow-header max-sm:shadow-none"
 >
 	<nav
-		class="mx-auto flex max-w-wide items-center justify-between px-snug py-snug max-sm:flex-wrap max-sm:gap-tight max-sm:py-tight"
+		class="mx-auto flex max-w-wide items-center justify-between px-content py-content max-sm:flex-wrap max-sm:gap-element max-sm:py-element"
 	>
 		<a
 			href="/"
-			class="flex items-center gap-tight font-heading text-h4 font-bold text-text no-underline transition-colors duration-fast hover:text-accent max-sm:text-body"
+			class="flex items-center gap-element font-heading text-h4 font-bold text-text no-underline transition-colors duration-fast hover:text-accent max-sm:text-body"
 		>
 			<img src="/images/logo.png" alt="" width="28" height="28" />
 			{SITE_TITLE}
 		</a>
 		{showNav && (
-			<div class="flex items-center gap-comfortable max-sm:contents">
+			<div class="flex items-center gap-block max-sm:contents">
 				<div
-					class="flex gap-snug font-heading text-small max-sm:order-1 max-sm:w-full max-sm:flex-wrap max-sm:gap-tight"
+					class="flex gap-content font-heading text-small max-sm:order-1 max-sm:w-full max-sm:flex-wrap max-sm:gap-element"
 				>
 					<a href="/" class="font-bold text-text no-underline transition-colors duration-fast hover:text-accent">ホーム</a>
 					<a href="/#plans" class="font-bold text-text no-underline transition-colors duration-fast hover:text-accent">プラン</a>

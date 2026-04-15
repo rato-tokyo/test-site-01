@@ -1,7 +1,7 @@
 /*
-  global.css — ノビテン デザインシステム
+  global.css — かんおけin デザインシステム
   Tailwind v4 の @theme ブロックが単一ソース。ページ・コンポーネント側では
-  生の CSS ではなく Tailwind の意味ベーストークンクラスを使う(p-snug, text-body 等)。
+  生の CSS ではなく Tailwind の意味ベーストークンクラスを使う(p-content, text-body 等)。
   トークン設計の単一ソース(メンテ時に先に触る): docs/design-system/tokens.md
 */
 
@@ -16,26 +16,30 @@
 	--radius-*: initial;
 
 	/* --- 余白・サイズ(意味ベース) --- */
-	/* Tailwind v4 では spacing axis が padding/margin/gap/width/height 全部をカバーする。
-	   余白・正方形サイズを同じ軸にまとめる。 */
 	--spacing-0: 0px;              /* top-0 等の位置指定に必要 */
-	--spacing-quarter: 0.25rem;    /* 4px  - バッジ内、極小要素間 */
-	--spacing-tight: 0.5rem;       /* 8px  - ボタン内、アイコン近接 */
-	--spacing-snug: 1rem;          /* 16px - 段落間、リスト項目間、カード内要素間 */
-	--spacing-icon: 2rem;          /* 32px - アイコン正方形(w-icon/h-icon)。comfortable と同値 */
-	--spacing-comfortable: 2rem;   /* 32px - 見出しと本文、カード間 */
-	--spacing-loose: 4rem;         /* 64px - セクション内ブロック間、ヒーロー内 */
+	--spacing-inset: 0.25rem;      /* 4px  - バッジ内padding、極小要素の内側余白 */
+	--spacing-element: 0.5rem;     /* 8px  - カード内padding、ボタン内、グリッドgap */
+	--spacing-content: 1rem;       /* 16px - コンテナpadding、セクション内stack gap */
+	--spacing-icon: 2rem;          /* 32px - アイコン正方形(w-icon/h-icon) */
+	--spacing-block: 2rem;         /* 32px - 見出しと本文間、カード間 */
+	--spacing-region: 4rem;        /* 64px - セクション内ブロック間、ヒーロー内 */
 	--spacing-section: 6rem;       /* 96px - ページ内セクション間 */
+	--spacing-first-block: 1rem;   /* 16px - ヘッダー直下ブロックの上パディング */
+
+	/* kanoke-in 固有 */
 	--spacing-logo: 9.375rem;      /* 150px - ヒーロー丸ロゴ(w-logo/h-logo) */
-	--spacing-swatch: 0.75rem;     /* 12px - 凡例色見本の正方形(size-swatch) */
+	--spacing-swatch: 0.75rem;     /* 12px - 凡例色見本の正方形 */
 	--spacing-time-label: 3rem;    /* 48px - カレンダー時間ラベル列幅(w-time-label) */
 	--spacing-legend-item: 6rem;   /* 96px - 凡例項目の最小幅(min-w-legend-item) */
 	--spacing-calendar-inner: 600px; /* カレンダー内部の最小幅(min-w-calendar-inner) */
 	--spacing-event-gap: 2px;      /* イベントブロック間の極小マージン */
 	--spacing-hero: 50vh;          /* ヒーロー最小高さ(min-h-hero) */
+	--spacing-footer-height: 300px; /* Footer の概算高さ。BaseLayout の min-height 計算用 */
+
+	/* ヘッダー高さ（sticky top 計算に使用） */
+	--spacing-header: 60px;
 
 	/* --- 色: Tier 1 プリミティブ --- */
-	/* 既存 :root の --color-* と数値を揃えている。 */
 	--color-brand: #1a2d5a;          /* 深夜の藍 */
 	--color-brand-hover: #0f1d3d;
 	--color-cta: #c0392b;            /* 赤系 CTA */
@@ -49,7 +53,7 @@
 	--color-line-200: #e5e5e5;
 	--color-white: #ffffff;
 
-	/* --- 色: Tier 2 セマンティック(ページ・コンポーネントからはこっちを使う) --- */
+	/* --- 色: Tier 2 セマンティック --- */
 	--color-bg: var(--color-paper-100);
 	--color-bg-surface: var(--color-paper-50);
 	--color-text: var(--color-ink-900);
@@ -68,16 +72,16 @@
 	--font-mono: ui-monospace, SFMono-Regular, monospace;
 
 	/* --- フォントサイズ(意味ベース) --- */
-	--text-xs: 0.75rem;            /* 12px - 時間ラベル、曜日略称 */
-	--text-caption: 0.8125rem;     /* 13px - キャプション・バッジ */
-	--text-small: 0.875rem;        /* 14px - フットノート・補助 */
-	--text-body: 1.125rem;         /* 18px - 本文(デフォルト) */
-	--text-lead: 1.25rem;          /* 20px - リード文 */
-	--text-h4: 1.25rem;            /* 20px */
-	--text-h3: 1.5rem;             /* 24px */
-	--text-h2: 1.75rem;            /* 28px */
-	--text-h1: 2rem;               /* 32px */
-	--text-display: 3rem;          /* 48px - ヒーロー */
+	--text-xs: 0.75rem;            /* 12px */
+	--text-caption: 0.8125rem;     /* 13px */
+	--text-small: 0.875rem;        /* 14px */
+	--text-body: 1.125rem;         /* 18px */
+	--text-lead: 1.25rem;          /* 20px */
+	--text-h4: 1.25rem;
+	--text-h3: 1.5rem;
+	--text-h2: 1.75rem;
+	--text-h1: 2rem;
+	--text-display: 3rem;
 
 	/* --- 角丸 --- */
 	--radius-sharp: 0;
@@ -85,15 +89,16 @@
 	--radius-soft: 8px;
 	--radius-pill: 9999px;
 
-	/* --- コンテナ最大幅(max-w-*) --- */
-	/* Tailwind の container scale。--container-* が消えていないので既存デフォルト + 追加定義が両方効く。
-	   既存 :root の --content-width(680px)/--wide-width(1200px)と揃えた意味ベース定義も追加。 */
+	/* --- コンテナ最大幅 --- */
 	--container-content: 42.5rem;  /* 680px - 読み物幅 */
-	--container-wide: 64rem;       /* 1024px - 標準ページ幅(既存 page-container と同じ) */
-	--container-button: 16.0rem;  /* 300px - プライマリボタン最大幅 */
+	--container-wide: 64rem;       /* 1024px - 標準ページ幅 */
+	--container-button: 16.0rem;   /* 256px - プライマリボタン最大幅 */
+	--container-step-img: 28rem;   /* 448px - 道順画像最大幅 */
 
 	/* --- シャドウ --- */
 	--shadow-card: 0 0 0 1px rgba(0, 0, 0, 0.1);
+	--shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.08);
+	--shadow-header: 0 1px 3px rgba(0, 0, 0, 0.08);
 	--shadow-logo-glow: 0 0 10px rgb(255 255 255), 0 0 20px rgb(255 255 255), 0 0 40px rgb(255 255 255);
 
 	/* --- テキストシャドウ --- */
@@ -112,28 +117,60 @@
 	--color-footer-subtle: #bbbbbb;
 	--color-footer-faint: #777777;
 
-	/* --- シャドウ（追加） --- */
-	--shadow-header: 0 1px 3px rgba(0, 0, 0, 0.08);
-
-	/* --- 余白（追加） --- */
-	--spacing-nav: 4rem;           /* 64px - ヘッダー高さ。Base.astro, index.astro で共有 */
-	--spacing-footer-height: 300px; /* Footer の概算高さ。Base.astro の min-height 計算用 */
-
-	/* --- コンテナ幅（追加） --- */
-	--container-step-img: 28rem;   /* 448px - directions.astro の道順画像最大幅 */
-
 	/* --- line-height --- */
-	--line-height-tight: 1.15;     /* h1-h6 */
-	--line-height-relaxed: 1.7;    /* body, .prose */
-	--line-height-loose: 2;        /* notice-list */
+	--line-height-heading: 1.15;
+	--line-height-body: 1.7;
+	--line-height-list: 2;
 
 	/* --- letter-spacing --- */
-	--letter-spacing-snug: -0.02em;  /* h2-h6 */
-	--letter-spacing-tight: -0.03em; /* h1 */
+	--letter-spacing-heading: -0.02em;
+	--letter-spacing-display: -0.03em;
 
-	/* --- グリッドテンプレート --- */
-	--grid-template-columns-recommend: repeat(auto-fill, minmax(250px, 1fr));
+	/* --- font-weight --- */
+	--font-weight-semibold: 600;
+	--font-weight-bold: 700;
+
+	/* --- z-index --- */
+	--z-header: 50;
+
+	/* --- border-width --- */
+	--border-width-thin: 1px;
+	--border-width-accent: 4px;
+
+	/* --- カレンダーイベント色（kanoke-in 固有） --- */
+	--color-cal-blue-border: #bfdbfe;
+	--color-cal-blue-bg: rgba(219,234,254,0.6);
+	--color-cal-blue-text: #1d4ed8;
+	--color-cal-blue-hover: #dbeafe;
+	--color-cal-green-border: #bbf7d0;
+	--color-cal-green-bg: rgba(220,252,231,0.6);
+	--color-cal-green-text: #15803d;
+	--color-cal-green-hover: #dcfce7;
+	--color-cal-red-border: #fecaca;
+	--color-cal-red-bg: rgba(254,226,226,0.6);
+	--color-cal-red-text: #b91c1c;
+	--color-cal-red-hover: #fee2e2;
+	--color-cal-yellow-border: #fef08a;
+	--color-cal-yellow-bg: rgba(254,249,195,0.6);
+	--color-cal-yellow-text: #a16207;
+	--color-cal-yellow-hover: #fef9c3;
+	--color-cal-purple-border: #e9d5ff;
+	--color-cal-purple-bg: rgba(243,232,255,0.6);
+	--color-cal-purple-text: #7e22ce;
+	--color-cal-purple-hover: #f3e8ff;
+	--color-cal-orange-border: #fed7aa;
+	--color-cal-orange-bg: rgba(255,237,213,0.6);
+	--color-cal-orange-text: #c2410c;
+	--color-cal-orange-hover: #ffedd5;
+
+	/* --- コンテナ・レイアウト幅（kanoke-in 固有） --- */
+	--container-sidebar: 22rem;     /* 352px - サイドバー幅 */
+	--container-grid-min: 250px;    /* Grid auto モードの最小幅 */
+
+	/* --- グリッドテンプレート（kanoke-in 固有） --- */
+	--grid-template-columns-recommend: repeat(auto-fill, minmax(var(--container-grid-min), 1fr));
 	--grid-template-columns-calendar: 3rem repeat(7, 1fr);
+	--grid-template-columns-label-content: auto 1fr;
 }
 
 /* base styles は @layer base に入れることで、Tailwind の utility class より specificity を低くする。
@@ -173,9 +210,8 @@
 
 	body {
 		font-family: var(--font-sans);
-		/* 本番 kanoke-in は html/body の base font-size が 18px。Tailwind の text-base を上書きしている */
 		font-size: var(--text-body);
-		line-height: var(--line-height-relaxed);
+		line-height: var(--line-height-body);
 		color: var(--color-text);
 		background: var(--color-bg);
 		-webkit-font-smoothing: antialiased;
@@ -208,14 +244,14 @@
 	h5,
 	h6 {
 		font-family: var(--font-sans);
-		line-height: var(--line-height-tight);
-		font-weight: 600;
-		letter-spacing: var(--letter-spacing-snug);
+		line-height: var(--line-height-heading);
+		font-weight: var(--font-weight-semibold);
+		letter-spacing: var(--letter-spacing-heading);
 	}
 
 	h1 {
-		font-weight: 700;
-		letter-spacing: var(--letter-spacing-tight);
+		font-weight: var(--font-weight-bold);
+		letter-spacing: var(--letter-spacing-display);
 	}
 
 	::selection {

@@ -2,35 +2,54 @@
 /**
  * Grid — CSS Grid のラッパープリミティブ。
  *
- * - `cols`: 'auto' (auto-fill minmax) / 'main-sidebar' (メイン + 22rem サイドバー、lg 以上) / 'halves' (2 等分、md 以上) / 'thirds' (3 等分、md 以上)
- * - `gap`: 'tight' | 'snug' | 'comfortable'
- * - `min`: auto モード時の最小幅(デフォルト 250px)
+ * - `cols`: 'auto' (auto-fill minmax) / 'main-sidebar' (メイン + サイドバー、lg 以上) / 'halves' (2 等分、md 以上) / 'thirds' (3 等分、md 以上)
+ * - `gap`: 'element' | 'content' | 'block'
  */
 interface Props {
 	cols?: 'auto' | 'main-sidebar' | 'halves' | 'thirds';
-	gap?: 'tight' | 'snug' | 'comfortable';
-	min?: string;
+	gap?: 'element' | 'content' | 'block';
 	class?: string;
 }
 
-const { cols = 'auto', gap = 'snug', min = '250px', class: className = '' } = Astro.props;
+const { cols = 'auto', gap = 'content', class: className = '' } = Astro.props;
 
 const gapClass = {
-	tight: 'gap-tight',
-	snug: 'gap-snug',
-	comfortable: 'gap-comfortable',
+	element: 'gap-element',
+	content: 'gap-content',
+	block: 'gap-block',
 }[gap];
-
-const colsClass = {
-	auto: '',
-	'main-sidebar': 'grid-cols-1 lg:grid-cols-[minmax(0,1fr)_22rem]',
-	halves: 'grid-cols-1 md:grid-cols-2',
-	thirds: 'grid-cols-1 md:grid-cols-3',
-}[cols];
-
-const autoStyle = cols === 'auto' ? `grid-template-columns: repeat(auto-fill, minmax(${min}, 1fr));` : undefined;
 ---
 
-<div class:list={['grid', gapClass, colsClass, className]} style={autoStyle}>
+<div class:list={['grid', gapClass, className]} data-cols={cols}>
 	<slot />
 </div>
+
+<style>
+	[data-cols="auto"] {
+		grid-template-columns: var(--grid-template-columns-recommend);
+	}
+	[data-cols="main-sidebar"] {
+		grid-template-columns: 1fr;
+	}
+	@media (min-width: 1024px) {
+		[data-cols="main-sidebar"] {
+			grid-template-columns: minmax(0, 1fr) var(--container-sidebar);
+		}
+	}
+	[data-cols="halves"] {
+		grid-template-columns: 1fr;
+	}
+	@media (min-width: 768px) {
+		[data-cols="halves"] {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	[data-cols="thirds"] {
+		grid-template-columns: 1fr;
+	}
+	@media (min-width: 768px) {
+		[data-cols="thirds"] {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

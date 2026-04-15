@@ -2,22 +2,22 @@
 /**
  * Stack — 子要素を縦に等間隔に並べるプリミティブ(Every Layout 由来)。
  *
- * - `gap`: 'tight' | 'snug' | 'comfortable' | 'loose' | 'section'
+ * - `gap`: 'element' | 'content' | 'block' | 'region' | 'section'
  * - `as`: ラップするタグ(デフォルト div)
  */
 interface Props {
-	gap?: 'tight' | 'snug' | 'comfortable' | 'loose' | 'section';
+	gap?: 'element' | 'content' | 'block' | 'region' | 'section';
 	as?: keyof HTMLElementTagNameMap;
 	class?: string;
 }
 
-const { gap = 'snug', as: Tag = 'div', class: className = '' } = Astro.props;
+const { gap = 'content', as: Tag = 'div', class: className = '' } = Astro.props;
 
 const gapClass = {
-	tight: 'space-y-tight',
-	snug: 'space-y-snug',
-	comfortable: 'space-y-comfortable',
-	loose: 'space-y-loose',
+	element: 'space-y-element',
+	content: 'space-y-content',
+	block: 'space-y-block',
+	region: 'space-y-region',
 	section: 'space-y-section',
 }[gap];
 ---

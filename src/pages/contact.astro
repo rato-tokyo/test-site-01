@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import Button from "../components/Button.astro";
+import Container from "../components/Container.astro";
+import Stack from "../components/Stack.astro";
+import { GOOGLE_FORM_CONTACT_URL } from "../consts";
+---
+
+<BaseLayout title="お問い合わせ" description="かんおけinへのお問い合わせ">
+	<section class="py-section">
+		<Container width="wide">
+			<Stack gap="content">
+				<div class="rounded-subtle bg-white p-block shadow-card">
+					<SectionHeading>お問い合わせ</SectionHeading>
+					<iframe
+						src={`${GOOGLE_FORM_CONTACT_URL}?embedded=true`}
+						title="お問い合わせフォーム"
+						width="100%"
+						height="1000"
+						class="border-0"
+					>読み込んでいます...</iframe>
+				</div>
+
+				<div class="flex justify-center">
+					<Button href="/" variant="outline">トップに戻る</Button>
+				</div>
+			</Stack>
+		</Container>
+	</section>
+</BaseLayout>

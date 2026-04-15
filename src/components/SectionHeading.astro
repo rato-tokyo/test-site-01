@@ -1,0 +1,38 @@
+---
+/**
+ * SectionHeading — セクション見出し
+ * 装飾バリエーションを `variant` prop で切り替える。
+ * - line-left: 左に縦ライン
+ * - line-bottom: 横幅いっぱいの下線
+ */
+
+interface Props {
+  variant?: 'line-left' | 'line-bottom';
+  level?: 'h2' | 'h3';
+  class?: string;
+}
+
+const {
+  variant = 'line-left',
+  level = 'h2',
+  class: className,
+} = Astro.props;
+
+const Tag = level;
+---
+
+<Tag class:list={['section-heading', `section-heading--${variant}`, 'text-h2', 'font-weight-bold', 'text-text', className]}>
+  <slot />
+</Tag>
+
+<style>
+  .section-heading--line-left {
+    border-left: var(--border-width-accent) solid var(--color-accent);
+    padding-left: var(--spacing-element);
+  }
+
+  .section-heading--line-bottom {
+    border-bottom: var(--border-width-accent) solid var(--color-accent);
+    padding-bottom: var(--spacing-inset);
+  }
+</style>

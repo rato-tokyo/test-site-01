@@ -1,8 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import Base from '../layouts/Base.astro';
-import SectionCard from '../components/SectionCard.astro';
-import SectionTitle from '../components/SectionTitle.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
 import StepNumber from '../components/StepNumber.astro';
@@ -19,11 +18,11 @@ const posts = allPosts
 	.slice(0, 3);
 ---
 
-<Base title="かんおけin | 瞑想空間" showNav={true}>
-	{/* ═══ ヒーロー ═══ */}
+<BaseLayout title="かんおけin | 瞑想空間" showNav={true}>
+	{/* ═══ ヒーロー（全幅） ═══ */}
 	<section
 		id="hero-section"
-		class="relative flex min-h-hero items-center justify-center overflow-hidden text-white"
+		class="hero-offset relative flex min-h-hero items-center justify-center overflow-hidden text-white"
 	>
 		<img
 			src="/images/hero-slide-1.jpg"
@@ -45,11 +44,11 @@ const posts = allPosts
 			alt=""
 			class="hero-slide absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-slide"
 		/>
-		<div class="relative z-10 flex flex-col items-center px-snug py-loose text-center">
-			<p class="font-heading text-lead font-bold leading-snug text-shadow-hero md:text-h1">
+		<div class="relative z-10 flex flex-col items-center px-content py-region text-center">
+			<p class="font-heading text-lead font-bold leading-heading text-shadow-hero md:text-h1">
 				{hero.tagline}
 			</p>
-			<div class="my-snug h-logo w-logo overflow-hidden rounded-pill bg-white shadow-logo-glow">
+			<div class="my-content h-logo w-logo overflow-hidden rounded-pill bg-white shadow-logo-glow">
 				<img
 					src="/images/logo-transparent.webp"
 					alt=""
@@ -58,272 +57,274 @@ const posts = allPosts
 					class="h-full w-full object-cover"
 				/>
 			</div>
-			<h1 class="font-heading text-lead font-bold leading-snug text-shadow-hero md:text-h1">
+			<h1 class="font-heading text-lead font-bold leading-heading text-shadow-hero md:text-h1">
 				{hero.heading}
 			</h1>
 		</div>
 	</section>
 
-	{/* ═══ Main + Sidebar レイアウト ═══ */}
-	<Container width="wide" class="py-snug">
-		<Grid cols="main-sidebar" gap="snug">
-			{/* ── メインカラム ── */}
-			<Stack gap="snug" as="main" class="min-w-0">
-				{/* 体験説明 */}
-				<SectionCard>
-					<SectionTitle>{experience.title}</SectionTitle>
-					<ol class="flex list-none flex-col gap-snug p-0">
-						{experience.steps.map((step, i) => (
-							<li class="flex items-center gap-snug text-body">
-								<StepNumber num={i + 1} />
-								<span>{step}</span>
-							</li>
-						))}
-					</ol>
-					<div class="mt-comfortable aspect-video w-full overflow-hidden">
-						<img src="/images/hero-coffin-room.png" alt="" class="h-full w-full object-cover" />
-					</div>
-				</SectionCard>
-
-				{/* おすすめ */}
-				<SectionCard>
-					<SectionTitle>{recommend.title}</SectionTitle>
-					<ul class="grid list-none grid-cols-recommend gap-tight p-0">
-						{recommend.items.map((item) => (
-							<li class="border-l-4 border-accent bg-bg-surface px-snug py-tight text-small">
-								{item}
-							</li>
-						))}
-					</ul>
-				</SectionCard>
-
-				{/* プラン */}
-				<SectionCard id="plans">
-					<SectionTitle>{plans.title}</SectionTitle>
-					<div class="flex flex-col">
-						{/* 通常プラン */}
-						<details class="group border-t border-border last:border-b" open>
-							<summary class="flex cursor-pointer list-none items-center justify-between py-snug transition-colors duration-fast hover:bg-bg-surface [&::-webkit-details-marker]:hidden">
-								<div class="flex flex-col gap-quarter">
-									<span class="text-lead font-bold">{plans.regular.title}</span>
-									<span class="flex flex-wrap items-center gap-tight text-small text-text-muted">
-										<Badge variant="cta">{plans.regular.noReservation}</Badge>
-										<Badge>{plans.regular.capacity}</Badge>
-										<span>{plans.regular.price}</span>
-									</span>
-								</div>
-								<span class="text-caption text-text-subtle transition-transform duration-base group-open:rotate-180">▼</span>
-							</summary>
-							<div class="flex flex-col gap-comfortable pb-snug">
-								<p>{plans.regular.desc}</p>
-								<div class="flex flex-col gap-snug">
-									{plans.regular.programs.map((p) => (
-										<div class="border border-border p-snug">
-											<p class="mb-quarter font-bold">{p.name}（{p.time}〜）</p>
-											<p class="text-small text-text-muted">{p.desc}</p>
-										</div>
-									))}
-								</div>
-								<div class="mt-tight flex justify-center">
-									<Button href="/plans/regular">詳細を見る</Button>
-								</div>
-							</div>
-						</details>
-						{/* 貸切プラン */}
-						<details class="group border-t border-border last:border-b">
-							<summary class="flex cursor-pointer list-none items-center justify-between py-snug transition-colors duration-fast hover:bg-bg-surface [&::-webkit-details-marker]:hidden">
-								<div class="flex flex-col gap-quarter">
-									<span class="text-lead font-bold">{plans.private.title}</span>
-									<span class="flex flex-wrap items-center gap-tight text-small text-text-muted">
-										<Badge variant="cta">{plans.private.reservation}</Badge>
-										<Badge>{plans.private.capacity}</Badge>
-										<span>{plans.private.price}</span>
-									</span>
-								</div>
-								<span class="text-caption text-text-subtle transition-transform duration-base group-open:rotate-180">▼</span>
-							</summary>
-							<div class="flex flex-col gap-comfortable pb-snug">
-								<p>{plans.private.desc}</p>
-								<div>
-									<h3 class="mb-tight inline-block border-b-2 border-text pb-tight font-bold">このような方におすすめ</h3>
-									<ul class="list-inside list-disc text-small text-text-muted">
-										{plans.private.recommendItems.map((item) => (
-											<li class="mb-quarter">{item}</li>
-										))}
-									</ul>
-								</div>
-								<div>
-									<h3 class="mb-tight inline-block border-b-2 border-text pb-tight font-bold">選べる内容</h3>
-									<ul class="list-inside list-disc text-small text-text-muted">
-										{plans.private.menuItems.map((item) => (
-											<li class="mb-quarter">{item}</li>
-										))}
-									</ul>
-								</div>
-								<div class="mt-tight flex justify-center">
-									<Button href="/plans/private">詳細を見る</Button>
-								</div>
-							</div>
-						</details>
-					</div>
-				</SectionCard>
-
-				{/* アクセス */}
-				<SectionCard id="access">
-					<SectionTitle>{access.title}</SectionTitle>
-					<iframe
-						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.631136554385!2d139.70419099999998!3d35.71069369999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188daa2ea65e99%3A0x4e1de1ee25f65867!2z44GL44KT44GK44GRaW4gKEthbm5va2UtaW4gQ29mZmluIE1lZGl0YXRpb24gU3BhY2Up!5e0!3m2!1sja!2sjp!4v1775634733860!5m2!1sja!2sjp"
-						class="aspect-video w-full border-0"
-						allowfullscreen
-						loading="lazy"
-					></iframe>
-					<div class="mt-comfortable flex flex-col gap-snug">
-						<div class="flex items-start gap-tight">
-							<span class="w-icon shrink-0 text-center">📍</span>
-							<div>
-								<p>{access.landmark}</p>
-								<p>{access.address1}</p>
-								<p>{access.address2}</p>
-							</div>
-						</div>
-						<div class="flex items-start gap-tight">
-							<span class="w-icon shrink-0 text-center">🚃</span>
-							<div>
-								<p>{access.train1}</p>
-								<p>{access.train2}</p>
-							</div>
-						</div>
-						<div class="flex items-start gap-tight">
-							<span class="w-icon shrink-0 text-center">📅</span>
-							<div>
-								<p>{access.closedDays}</p>
-								<p class="text-small text-text-muted">{access.scheduleNote}</p>
-							</div>
+	{/* ═══ Main + Sidebar セクション群 ═══ */}
+	<section class="py-section">
+		<Container width="wide">
+			<Grid cols="main-sidebar" gap="content">
+				{/* ── メインカラム ── */}
+				<Stack gap="content" as="main" class="min-w-0">
+					{/* 体験説明 */}
+					<div class="rounded-subtle bg-white p-block shadow-card">
+						<SectionHeading>{experience.title}</SectionHeading>
+						<ol class="flex list-none flex-col gap-content p-0">
+							{experience.steps.map((step, i) => (
+								<li class="flex items-center gap-content text-body">
+									<StepNumber num={i + 1} />
+									<span>{step}</span>
+								</li>
+							))}
+						</ol>
+						<div class="mt-block aspect-video w-full overflow-hidden">
+							<img src="/images/hero-coffin-room.png" alt="" class="h-full w-full object-cover" />
 						</div>
 					</div>
-					<div class="mt-comfortable flex flex-col items-center gap-tight">
-						<Button href="/directions">道順ガイド</Button>
-						<Button href={GOOGLE_FORM_CONTACT_URL} target="_blank" variant="outline">お問い合わせ</Button>
-					</div>
-				</SectionCard>
 
-				{/* Q&A */}
-				<SectionCard id="faq">
-					<SectionTitle>{faq.title}</SectionTitle>
-					<div class="flex flex-col gap-tight">
-						{faq.items.map((item) => (
-							<details class="border border-border open:bg-bg-surface">
-								<summary class="flex cursor-pointer list-none gap-tight px-snug py-tight font-semibold [&::-webkit-details-marker]:hidden">
-									<span class="font-bold text-accent">Q.</span>
-									<span>{item.q}</span>
+					{/* おすすめ */}
+					<div class="rounded-subtle bg-white p-block shadow-card">
+						<SectionHeading>{recommend.title}</SectionHeading>
+						<ul class="grid list-none grid-cols-recommend gap-element p-0">
+							{recommend.items.map((item) => (
+								<li class="border-l-4 border-accent bg-bg-surface px-content py-element text-small">
+									{item}
+								</li>
+							))}
+						</ul>
+					</div>
+
+					{/* プラン */}
+					<div id="plans" class="rounded-subtle bg-white p-block shadow-card">
+						<SectionHeading>{plans.title}</SectionHeading>
+						<div class="flex flex-col">
+							{/* 通常プラン */}
+							<details class="group border-t border-border last:border-b" open>
+								<summary class="flex cursor-pointer list-none items-center justify-between py-content transition-colors duration-fast hover:bg-bg-surface [&::-webkit-details-marker]:hidden">
+									<div class="flex flex-col gap-inset">
+										<span class="text-lead font-bold">{plans.regular.title}</span>
+										<span class="flex flex-wrap items-center gap-element text-small text-text-muted">
+											<Badge variant="cta">{plans.regular.noReservation}</Badge>
+											<Badge>{plans.regular.capacity}</Badge>
+											<span>{plans.regular.price}</span>
+										</span>
+									</div>
+									<span class="text-caption text-text-subtle transition-transform duration-base group-open:rotate-180">▼</span>
 								</summary>
-								<p class="px-snug pb-tight pl-comfortable text-text-muted">{item.a}</p>
+								<div class="flex flex-col gap-block pb-content">
+									<p>{plans.regular.desc}</p>
+									<div class="flex flex-col gap-content">
+										{plans.regular.programs.map((p) => (
+											<div class="border border-border p-content">
+												<p class="mb-inset font-bold">{p.name}（{p.time}〜）</p>
+												<p class="text-small text-text-muted">{p.desc}</p>
+											</div>
+										))}
+									</div>
+									<div class="mt-element flex justify-center">
+										<Button href="/plans/regular">詳細を見る</Button>
+									</div>
+								</div>
 							</details>
-						))}
+							{/* 貸切プラン */}
+							<details class="group border-t border-border last:border-b">
+								<summary class="flex cursor-pointer list-none items-center justify-between py-content transition-colors duration-fast hover:bg-bg-surface [&::-webkit-details-marker]:hidden">
+									<div class="flex flex-col gap-inset">
+										<span class="text-lead font-bold">{plans.private.title}</span>
+										<span class="flex flex-wrap items-center gap-element text-small text-text-muted">
+											<Badge variant="cta">{plans.private.reservation}</Badge>
+											<Badge>{plans.private.capacity}</Badge>
+											<span>{plans.private.price}</span>
+										</span>
+									</div>
+									<span class="text-caption text-text-subtle transition-transform duration-base group-open:rotate-180">▼</span>
+								</summary>
+								<div class="flex flex-col gap-block pb-content">
+									<p>{plans.private.desc}</p>
+									<div>
+										<h3 class="mb-element inline-block border-b-2 border-text pb-element font-bold">このような方におすすめ</h3>
+										<ul class="list-inside list-disc text-small text-text-muted">
+											{plans.private.recommendItems.map((item) => (
+												<li class="mb-inset">{item}</li>
+											))}
+										</ul>
+									</div>
+									<div>
+										<h3 class="mb-element inline-block border-b-2 border-text pb-element font-bold">選べる内容</h3>
+										<ul class="list-inside list-disc text-small text-text-muted">
+											{plans.private.menuItems.map((item) => (
+												<li class="mb-inset">{item}</li>
+											))}
+										</ul>
+									</div>
+									<div class="mt-element flex justify-center">
+										<Button href="/plans/private">詳細を見る</Button>
+									</div>
+								</div>
+							</details>
+						</div>
 					</div>
-				</SectionCard>
 
-				{/* 体験者の感想 */}
-				<SectionCard>
-					<SectionTitle>{testimonials.title}</SectionTitle>
-					<div class="flex flex-col gap-comfortable">
-						{testimonials.items.map((item) => (
-							<blockquote class="m-0 border-l-4 border-accent bg-bg-surface p-snug">
-								<p class="mb-tight text-small leading-relaxed text-text-muted">{item.body}</p>
-								<footer class="flex items-center gap-tight text-small">
-									<cite class="font-bold not-italic">{item.name}</cite>
-									<span class="text-text-subtle">{item.attribute}</span>
-								</footer>
-							</blockquote>
-						))}
+					{/* アクセス */}
+					<div id="access" class="rounded-subtle bg-white p-block shadow-card">
+						<SectionHeading>{access.title}</SectionHeading>
+						<iframe
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.631136554385!2d139.70419099999998!3d35.71069369999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188daa2ea65e99%3A0x4e1de1ee25f65867!2z44GL44KT44GK44GRaW4gKEthbm5va2UtaW4gQ29mZmluIE1lZGl0YXRpb24gU3BhY2Up!5e0!3m2!1sja!2sjp!4v1775634733860!5m2!1sja!2sjp"
+							class="aspect-video w-full border-0"
+							allowfullscreen
+							loading="lazy"
+						></iframe>
+						<div class="mt-block flex flex-col gap-content">
+							<div class="flex items-start gap-element">
+								<span class="w-icon shrink-0 text-center">📍</span>
+								<div>
+									<p>{access.landmark}</p>
+									<p>{access.address1}</p>
+									<p>{access.address2}</p>
+								</div>
+							</div>
+							<div class="flex items-start gap-element">
+								<span class="w-icon shrink-0 text-center">🚃</span>
+								<div>
+									<p>{access.train1}</p>
+									<p>{access.train2}</p>
+								</div>
+							</div>
+							<div class="flex items-start gap-element">
+								<span class="w-icon shrink-0 text-center">📅</span>
+								<div>
+									<p>{access.closedDays}</p>
+									<p class="text-small text-text-muted">{access.scheduleNote}</p>
+								</div>
+							</div>
+						</div>
+						<div class="mt-block flex flex-col items-center gap-element">
+							<Button href="/directions">道順ガイド</Button>
+							<Button href="/contact" variant="outline">お問い合わせ</Button>
+						</div>
 					</div>
-				</SectionCard>
 
-				{/* 色紙 */}
-				<SectionCard>
-					<SectionTitle>{shikishi.title}</SectionTitle>
-					<p>{shikishi.description}</p>
-					<div class="mt-snug grid grid-cols-2 gap-snug sm:grid-cols-3">
-						{[54, 53, 52, 51, 50, 49].map((n) => (
-							<img
-								src={`/images/shikishi/shikishi-${String(n).padStart(2, '0')}.jpg`}
-								alt={`色紙 ${n}`}
-								width="400"
-								height="300"
-								class="aspect-[4/3] w-full object-cover"
-								loading="lazy"
-							/>
-						))}
-					</div>
-					<div class="mt-snug flex justify-center">
-						<Button href="/shikishi">もっと見る</Button>
-					</div>
-				</SectionCard>
-
-				{/* ブログ */}
-				{posts.length > 0 && (
-					<SectionCard>
-						<SectionTitle>ブログ</SectionTitle>
-						<div class="mb-snug flex flex-col gap-tight">
-							{posts.map((post) => (
-								<article class="border border-border p-snug">
-									<a href={`/blog/${post.id}/`} class="text-inherit no-underline">
-										<h3 class="text-body font-semibold">{post.data.title}</h3>
-									</a>
-									{post.data.description && <p class="mt-quarter text-small text-text-muted">{post.data.description}</p>}
-								</article>
+					{/* Q&A */}
+					<div id="faq" class="rounded-subtle bg-white p-block shadow-card">
+						<SectionHeading>{faq.title}</SectionHeading>
+						<div class="flex flex-col gap-element">
+							{faq.items.map((item) => (
+								<details class="border border-border open:bg-bg-surface">
+									<summary class="flex cursor-pointer list-none gap-element px-content py-element font-semibold [&::-webkit-details-marker]:hidden">
+										<span class="font-bold text-accent">Q.</span>
+										<span>{item.q}</span>
+									</summary>
+									<p class="px-content pb-element pl-block text-text-muted">{item.a}</p>
+								</details>
 							))}
 						</div>
-						<div class="mt-tight flex justify-center">
-							<Button href="/blog">記事一覧</Button>
-						</div>
-					</SectionCard>
-				)}
-			</Stack>
+					</div>
 
-			{/* ── サイドバー（デスクトップ） ── */}
-			<aside class="hidden lg:block">
-				<div class="sidebar-sticky">
-					<div class="border-4 border-text bg-white p-comfortable">
-						<div>
-							<p class="mb-quarter font-bold">通常プラン</p>
-							<div class="flex flex-wrap gap-tight">
-								<Badge variant="cta">予約不要</Badge>
-								<Badge>定員5名</Badge>
-							</div>
-							<p class="my-tight text-center">
-								<span class="text-h1 font-bold tabular-nums">3,000</span>
-								<span class="text-small">円 / 人</span>
-							</p>
-							<p class="text-small text-text-muted">奇数時間スタート（11〜17時）</p>
-						</div>
-
-						<hr class="my-snug border-0 border-t border-border" />
-
-						<div>
-							<p class="mb-quarter font-bold">貸切予約プラン</p>
-							<div class="flex flex-wrap gap-tight">
-								<Badge variant="cta">予約制</Badge>
-								<Badge>定員1〜5名</Badge>
-							</div>
-							<p class="my-tight text-center">
-								<span class="text-h1 font-bold tabular-nums">10,000</span>
-								<span class="text-small">円 / 枠</span>
-							</p>
-							<p class="text-small text-text-muted">偶数時間スタート（12〜18時）</p>
-						</div>
-
-						<div class="mt-snug flex flex-col gap-tight">
-							<Button href="/plans/regular">通常プランの詳細</Button>
-							<Button href="/plans/private">貸切プランの詳細</Button>
-							<Button href={GOOGLE_FORM_CONTACT_URL} target="_blank" variant="outline">お問い合わせ</Button>
+					{/* 体験者の感想 */}
+					<div class="rounded-subtle bg-white p-block shadow-card">
+						<SectionHeading>{testimonials.title}</SectionHeading>
+						<div class="flex flex-col gap-block">
+							{testimonials.items.map((item) => (
+								<blockquote class="m-0 border-l-4 border-accent bg-bg-surface p-content">
+									<p class="mb-element text-small leading-body text-text-muted">{item.body}</p>
+									<footer class="flex items-center gap-element text-small">
+										<cite class="font-bold not-italic">{item.name}</cite>
+										<span class="text-text-subtle">{item.attribute}</span>
+									</footer>
+								</blockquote>
+							))}
 						</div>
 					</div>
-				</div>
-			</aside>
-		</Grid>
-	</Container>
-</Base>
+
+					{/* 色紙 */}
+					<div class="rounded-subtle bg-white p-block shadow-card">
+						<SectionHeading>{shikishi.title}</SectionHeading>
+						<p>{shikishi.description}</p>
+						<div class="mt-content grid grid-cols-2 gap-content sm:grid-cols-3">
+							{[54, 53, 52, 51, 50, 49].map((n) => (
+								<img
+									src={`/images/shikishi/shikishi-${String(n).padStart(2, '0')}.jpg`}
+									alt={`色紙 ${n}`}
+									width="400"
+									height="300"
+									class="aspect-[4/3] w-full object-cover"
+									loading="lazy"
+								/>
+							))}
+						</div>
+						<div class="mt-content flex justify-center">
+							<Button href="/shikishi">もっと見る</Button>
+						</div>
+					</div>
+
+					{/* ブログ */}
+					{posts.length > 0 && (
+						<div class="rounded-subtle bg-white p-block shadow-card">
+							<SectionHeading>ブログ</SectionHeading>
+							<div class="mb-content flex flex-col gap-element">
+								{posts.map((post) => (
+									<article class="border border-border p-content">
+										<a href={`/blog/${post.id}/`} class="text-inherit no-underline">
+											<h3 class="text-body font-semibold">{post.data.title}</h3>
+										</a>
+										{post.data.description && <p class="mt-inset text-small text-text-muted">{post.data.description}</p>}
+									</article>
+								))}
+							</div>
+							<div class="mt-element flex justify-center">
+								<Button href="/blog">記事一覧</Button>
+							</div>
+						</div>
+					)}
+				</Stack>
+
+				{/* ── サイドバー（デスクトップ） ── */}
+				<aside class="hidden lg:block">
+					<div class="sidebar-sticky">
+						<div class="border-4 border-text bg-white p-block">
+							<div>
+								<p class="mb-inset font-bold">通常プラン</p>
+								<div class="flex flex-wrap gap-element">
+									<Badge variant="cta">予約不要</Badge>
+									<Badge>定員5名</Badge>
+								</div>
+								<p class="my-element text-center">
+									<span class="text-h1 font-bold tabular-nums">3,000</span>
+									<span class="text-small">円 / 人</span>
+								</p>
+								<p class="text-small text-text-muted">奇数時間スタート（11〜17時）</p>
+							</div>
+
+							<hr class="my-content border-0 border-t border-border" />
+
+							<div>
+								<p class="mb-inset font-bold">貸切予約プラン</p>
+								<div class="flex flex-wrap gap-element">
+									<Badge variant="cta">予約制</Badge>
+									<Badge>定員1〜5名</Badge>
+								</div>
+								<p class="my-element text-center">
+									<span class="text-h1 font-bold tabular-nums">10,000</span>
+									<span class="text-small">円 / 枠</span>
+								</p>
+								<p class="text-small text-text-muted">偶数時間スタート（12〜18時）</p>
+							</div>
+
+							<div class="mt-content flex flex-col gap-element">
+								<Button href="/plans/regular">通常プランの詳細</Button>
+								<Button href="/plans/private">貸切プランの詳細</Button>
+								<Button href="/contact" variant="outline">お問い合わせ</Button>
+							</div>
+						</div>
+					</div>
+				</aside>
+			</Grid>
+		</Container>
+	</section>
+</BaseLayout>
 
 <style>
 	/* Hero - JS の classList トグルと連携するためのフック。 */
@@ -331,10 +332,16 @@ const posts = allPosts
 		opacity: 1;
 	}
 
+	/* ヒーローは固定ヘッダーの裏に食い込ませる（全幅画像が padding-top の上にも広がる） */
+	.hero-offset {
+		margin-top: calc(-1 * var(--spacing-header));
+		padding-top: var(--spacing-header);
+	}
+
 	/* Sidebar sticky - calc の top 位置指定のため scoped に残す。 */
 	.sidebar-sticky {
 		position: sticky;
-		top: calc(var(--spacing-nav) + var(--spacing-snug));
+		top: calc(var(--spacing-header) + var(--spacing-content));
 	}
 </style>
 

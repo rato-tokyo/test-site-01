@@ -72,12 +72,12 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 	}).formatRange(weekDates[0], weekDates[6]);
 
 	return (
-		<div className="flex flex-col gap-tight">
+		<div className="flex flex-col gap-element">
 			{/* ナビゲーション */}
 			<div className="flex items-center justify-between">
 				<button
 					type="button"
-					className="cursor-pointer rounded-subtle border-none bg-transparent p-quarter text-body leading-none text-text transition-colors hover:bg-text/5"
+					className="cursor-pointer rounded-subtle border-none bg-transparent p-inset text-body leading-none text-text transition-colors hover:bg-text/5"
 					aria-label="前の週"
 					onClick={goToPrevWeek}
 				>
@@ -86,7 +86,7 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 				<span className="text-small font-medium">{weekRangeLabel}</span>
 				<button
 					type="button"
-					className="cursor-pointer rounded-subtle border-none bg-transparent p-quarter text-body leading-none text-text transition-colors hover:bg-text/5"
+					className="cursor-pointer rounded-subtle border-none bg-transparent p-inset text-body leading-none text-text transition-colors hover:bg-text/5"
 					aria-label="次の週"
 					onClick={goToNextWeek}
 				>
@@ -103,7 +103,7 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 						{weekDates.map((date, i) => {
 							const isToday = date.toDateString() === todayStr;
 							return (
-								<div key={i} className="pb-tight text-center">
+								<div key={i} className="pb-element text-center">
 									<span
 										className={`block text-xs ${isToday ? "font-semibold text-text" : "font-normal text-text-subtle"}`}
 									>
@@ -129,7 +129,7 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 						{hours.map((h, i) => (
 							<div
 								key={h}
-								className="left-0 absolute w-time-label -translate-y-1/2 pr-tight text-right text-xs text-text-subtle"
+								className="left-0 absolute w-time-label -translate-y-1/2 pr-element text-right text-xs text-text-subtle"
 								style={{ top: `${i * CALENDAR.CELL_HEIGHT}px` }}
 							>
 								{h}:00
@@ -204,7 +204,7 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 												}}
 											>
 												<div
-													className="mx-event-gap h-full overflow-hidden rounded-subtle border border-solid px-tight text-xs"
+													className="mx-event-gap h-full overflow-hidden rounded-subtle border border-solid px-element text-xs"
 													style={{
 														borderColor: colorStyles.borderColor,
 														backgroundColor: colorStyles.bgColor,
@@ -238,10 +238,10 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 
 			{/* モバイル凡例 */}
 			{uniqueTitles.length > 0 && (
-				<div className="flex flex-wrap gap-x-snug gap-y-quarter text-small sm:hidden">
+				<div className="flex flex-wrap gap-x-content gap-y-inset text-small sm:hidden">
 					{mobileMode === "symbol" ? (
 						<>
-							<span className="flex min-w-legend-item items-center gap-quarter">
+							<span className="flex min-w-legend-item items-center gap-inset">
 								<span
 									className="inline-block size-swatch rounded-subtle border border-solid"
 									style={{
@@ -251,7 +251,7 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 								/>
 								<span>◯ 予約可能</span>
 							</span>
-							<span className="flex min-w-legend-item items-center gap-quarter">
+							<span className="flex min-w-legend-item items-center gap-inset">
 								<span
 									className="inline-block size-swatch rounded-subtle border border-solid"
 									style={{
@@ -266,7 +266,7 @@ export default function WeekCalendar({ events, mobileMode = "numbered" }: Props)
 						uniqueTitles.map((u, i) => {
 							const cs = EVENT_COLOR_MAP[u.color];
 							return (
-								<span key={u.title} className="flex min-w-legend-item items-center gap-quarter">
+								<span key={u.title} className="flex min-w-legend-item items-center gap-inset">
 									<span
 										className="inline-block size-swatch rounded-subtle border border-solid"
 										style={{

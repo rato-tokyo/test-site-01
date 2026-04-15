@@ -27,7 +27,8 @@ const { title, description = SITE_DESCRIPTION, showNav = false } = Astro.props;
 
 		<style>
 			main {
-				min-height: calc(100vh - var(--spacing-nav) - var(--spacing-footer-height));
+				padding-top: var(--spacing-header);
+				min-height: calc(100vh - var(--spacing-header) - var(--spacing-footer-height));
 			}
 		</style>
 	</body>

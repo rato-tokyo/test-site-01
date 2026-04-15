@@ -1,18 +1,6 @@
 ---
-// kanoke-in の /ja/directions を Astro にそのまま pure コピー。
-// 本番は "use client" な React コンポーネントだが、ロジックゼロの静的ページなので
-// Astro ネイティブに書き下してある。client JS は一切使わない。
-//
-// 本番は Tailwind + shadcn/ui Card で
-//   - CardHeader: h2(border-l-4) + subtitle
-//   - CardContent: 10 ステップ(space-y-8)。各ステップは space-y-3
-//   - バッジ: w-8 h-8 rounded-full bg-brand text-white
-//   - 画像: max-w-md(448px) rounded-lg(本番 computed value は 2px)
-// を組み合わせている。SectionCard は他ページと揃えつつ、CardHeader 相当は
-// ページ内で個別に組む(サブタイトル付きヘッダは SectionTitle の責務に含めない)。
-import Base from "../layouts/Base.astro";
-import SectionCard from "../components/SectionCard.astro";
-import SectionTitle from "../components/SectionTitle.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
 import Button from "../components/Button.astro";
 import Container from "../components/Container.astro";
 import Stack from "../components/Stack.astro";
@@ -92,39 +80,39 @@ const steps = [
 ];
 ---
 
-<Base title="道順ガイド" description="JR高田馬場駅からの道順を写真でご案内します。">
-	<Container width="wide" class="py-snug">
-		<Stack gap="snug">
-			<SectionCard>
-				<SectionTitle>道順ガイド</SectionTitle>
-				<p class="text-text-muted">JR高田馬場駅からの道順を写真でご案内します。</p>
+<BaseLayout title="道順ガイド" description="JR高田馬場駅からの道順を写真でご案内します。">
+	<section class="py-section">
+		<Container width="wide">
+			<Stack gap="content">
+				<div class="rounded-subtle bg-white p-block shadow-card">
+					<SectionHeading>道順ガイド</SectionHeading>
+					<p class="text-text-muted">JR高田馬場駅からの道順を写真でご案内します。</p>
 
-				{/* CardContent(space-y-8) */}
-				<Stack gap="comfortable">
-					{steps.map((step, i) => (
-						<Stack gap="tight">
-							<h3 class="flex items-center gap-tight text-body font-bold leading-tight">
-								<StepNumber num={i + 1} />
-								{step.title}
-							</h3>
-							<img
-								src={step.src}
-								alt={step.title}
-								width={step.width}
-								height={step.height}
-								loading="eager"
-								class="block h-auto w-full max-w-step-img rounded-subtle"
-							/>
-							<p class="leading-loose text-text-muted">{step.description}</p>
-						</Stack>
-					))}
-				</Stack>
-			</SectionCard>
+					<Stack gap="block">
+						{steps.map((step, i) => (
+							<Stack gap="element">
+								<h3 class="flex items-center gap-element text-body font-bold leading-heading">
+									<StepNumber num={i + 1} />
+									{step.title}
+								</h3>
+								<img
+									src={step.src}
+									alt={step.title}
+									width={step.width}
+									height={step.height}
+									loading="eager"
+									class="block h-auto w-full max-w-step-img rounded-subtle"
+								/>
+								<p class="leading-list text-text-muted">{step.description}</p>
+							</Stack>
+						))}
+					</Stack>
+				</div>
 
-			<div class="flex justify-center">
-				<Button href="/#access" variant="outline">戻る</Button>
-			</div>
-		</Stack>
-	</Container>
-</Base>
-
+				<div class="flex justify-center">
+					<Button href="/#access" variant="outline">戻る</Button>
+				</div>
+			</Stack>
+		</Container>
+	</section>
+</BaseLayout>
